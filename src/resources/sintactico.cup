@@ -1,4 +1,3 @@
-
 package analizadorjava;
 import java.io.*;
 import java_cup.runtime.*;
@@ -19,19 +18,20 @@ parser code
 
 :}
 
-terminal String entero,flotante,doble,cadena,booleano;
-terminal String puntoycoma, dospuntos,punto;
-terminal String privado,publico,protegido estatico,;
-terminal String abstracto,clase,importar, paquete;
-terminal String ciclofor,si,interrumputor,mientras,hacermientras,caso,sino;
-terminal String intentar,cachar,romper;
-terminal String Igual,,Menor_que,Mayor_que,Abrir_parentesis,Cerrar_parentesis,Abrir_llave,Cerrar_llave,suma,resta,division,multiplicacion,AND,OR,NOT;
-terminal String MayorIgual, MenorIgual, Residuo,Corchete_abre,Corchete_cierra,coma,igualgual,factorial;
-terminal String diagonalInversa,
-terminal String comilla, variable;
+terminal String Entero,Flotante,Doble,Cadena,Booleano;
+terminal String Puntoycoma,Dospuntos,Punto;
+terminal String Privado,Publico,Protegido, Estatico,;
+terminal String Abstracto, Clase, Importar, Paquete;
+terminal String Ciclofor,Si,Interrumputor,Mientras,Hacermientras,Caso,Sino;
+terminal String Intentar,Cachar,Romper;
+terminal String Igual,,Menor_que,Mayor_que,Abrir_parentesis,Cerrar_parentesis,Abrir_llave,Cerrar_llave,Suma, Resta, Division,Multiplicacion,AND,OR,NOT;
+terminal String MayorIgual, MenorIgual, Residuo, Corchete_abre, Corchete_cierra,Coma,Igualgual,Factorial;
+terminal String DiagonalInversa, Hueco, Principal;
+terminal String Comilla, Variable, Argumento;
 
-non terminal Declaracion, Condicionif, CondificionFor, OperacionAritmetica, DarvalorVariable, Metodos, metodoMain, importacion;
+non terminal Declaracion, Condicionif, CondificionFor, OperacionAritmetica, DarvalorVariable, Metodos, MetodoMain, Importacion;
 non terminal elMientras, ElhacerMientras, CFor, CondicionWhile, Paqueteria, estructuraClase, ElInterrumputor,EstructuraSi;
+non terminal EstructuraPrograma, EstructuraClase
 
 non terminal ConsultaOrderBy, ConsultaAs, ConsultaDistinct,ConsultaALL, ConsultaWhere, Consulta, Operador, ConsultaAON, ConsultaNombre, Programa;
 
@@ -43,7 +43,18 @@ Paqueteria ::= paquete variable puntoycoma | error ;
 
 importacion2 ::= punto variable | punto variable importancion2 | error ;
 
-importacion :: = importar variable puntoycoma| importar variable importacion2 puntoycoma;
+importacion ::= importar variable puntoycoma| importar variable importacion2 puntoycoma;
+
+EstructuraClase ::= Publico Clase Variable Abrir_llave Estructuraprograma Cerrar_llave 
+            | Privado Clase Variable Abrir_llave Estructuraprograma Cerrar_llave
+            | Protegido Clase variable Abrir_llave Estructuraprograma Cerrar_llave
+            | Estatico Clase variable Abrir_llave Estructuraprograma Cerrar_llave
+            ;
+
+MetodoMain ::= Publico Estatico Hueco Principal
+
+
+
 
 
 
