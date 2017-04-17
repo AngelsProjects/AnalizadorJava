@@ -1,0 +1,135 @@
+
+package analizadorjava;
+import java.io.*;
+import java_cup.runtime.*;
+
+parser code
+{:
+    public static void main(String args[]) throws Exception
+    {
+        //new parser(new Yylex(new FileInputStream(args[0]))).parse();
+        new parser(new Yylex(System.in)).parse();
+        
+    }    
+
+    public void sintax_error(Symbol s)
+    {
+        report_error("Error de sintaxis. Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: \"" + s.value +"\"",null);
+    }
+
+:}
+
+terminal String entero,flotante,doble,cadena,booleano;
+terminal String puntoycoma, dospuntos,punto;
+terminal String privado,publico,protegido estatico,;
+terminal String abstracto,clase,importar, paquete;
+terminal String ciclofor,si,interrumputor,mientras,hacermientras,caso,sino;
+terminal String intentar,cachar,romper;
+terminal String Igual,,Menor_que,Mayor_que,Abrir_parentesis,Cerrar_parentesis,Abrir_llave,Cerrar_llave,suma,resta,division,multiplicacion,AND,OR,NOT;
+terminal String MayorIgual, MenorIgual, Residuo,Corchete_abre,Corchete_cierra,coma,igualgual,factorial;
+terminal String diagonalInversa,
+terminal String comilla, variable;
+
+non terminal Declaracion, Condicionif, CondificionFor, OperacionAritmetica, DarvalorVariable, Metodos, metodoMain, importacion;
+non terminal elMientras, ElhacerMientras, CFor, CondicionWhile, Paqueteria, estructuraClase, ElInterrumputor,EstructuraSi;
+
+non terminal ConsultaOrderBy, ConsultaAs, ConsultaDistinct,ConsultaALL, ConsultaWhere, Consulta, Operador, ConsultaAON, ConsultaNombre, Programa;
+
+Programa ::= Consulta Terminar {: System.out.println("Se termino de leer la sentencia"); :}
+                            | error
+
+
+Paqueteria ::= paquete variable puntoycoma | error ;
+
+importacion2 ::= punto variable | punto variable importancion2 | error ;
+
+importacion :: = importar variable puntoycoma| importar variable importacion2 puntoycoma;
+
+
+
+
+
+Declaracion ::=  Seleccionador  ConsultaAs 
+           | Seleccionador  ConsultaAs ConsultaWhere
+           | Seleccionador Nombre PUNTO Nombre Desde Nombre ConsultaOrderBy
+           | Seleccionador Nombre PUNTO Nombre 
+           | Seleccionador Nombre PUNTO Nombre Desde Nombre ConsultaWhere
+           | Seleccionador Nombre PUNTO Nombre ConsultaWhere 
+           | Seleccionador Nombre PUNTO Nombre Desde Nombre inner_join Nombre
+           | Seleccionador Nombre PUNTO Nombre Desde Nombre right_join Nombre
+           | Seleccionador Nombre PUNTO Nombre Desde Nombre left_join Nombre
+           | Seleccionador Nombre Desde Nombre inner_join Nombre
+           | Seleccionador Nombre Desde Nombre right_join Nombre
+           | Seleccionador Nombre Desde Nombre left_join Nombre
+           | Seleccionador Nombre Desde Nombre
+           | Seleccionador Nombre Desde Nombre ConsultaOrderBy
+           | Seleccionador Nombre Desde ConsultaWhere 
+           | Seleccionador Nombre Desde ConsultaWhere ConsultaOrderBy
+           | Seleccionador TodasColumnas 
+           | Seleccionador TodasColumnas Desde Nombre
+           | Seleccionador TodasColumnas Desde Nombre ConsultaWhere
+           | Seleccionador TodasColumnas ConsultaWhere
+           | Seleccionador TodasColumnas Desde Nombre inner_join Nombre
+           | Seleccionador TodasColumnas Desde Nombre right_join Nombre
+           | Seleccionador TodasColumnas Nombre Desde Nombre left_join Nombre
+           | Seleccionador Nombre PUNTO TodasColumnas
+           | Seleccionador Nombre PUNTO TodasColumnas ConsultaWhere  
+           | Seleccionador Nombre PUNTO TodasColumnas inner_join Nombre
+           | Seleccionador Nombre PUNTO TodasColumnas right_join Nombre
+           | Seleccionador Nombre PUNTO TodasColumnas left_join Nombre
+           | Seleccionador ConsultaDistinct Desde Nombre 
+           | Seleccionador ConsultaDistinct Desde Nombre ConsultaWhere
+           | Seleccionador TodasColumnas Separador ConsultaNombre PUNTO Nombre Desde Nombre inner_join Nombre ON Nombre Operador Nombre
+           | error
+           ;
+
+ConsultaDistinct ::= Distinto ConsultaNombre 
+                 | error
+                 ;
+
+ConsultaWhere ::= Ubicacion Nombre Operador ComillasSimples Nombre ComillasSimples 
+               | Ubicacion Nombre Operador ComillasSimples Nombre ComillasSimples ConsultaAON
+               | Ubicacion Abrir_parentesis Nombre Operador ComillasSimples Nombre ComillasSimples Cerrar_parentesis
+               | Ubicacion Abrir_parentesis Nombre Operador ComillasSimples Nombre ComillasSimples Cerrar_parentesis ConsultaAON
+               | Ubicacion Abrir_parentesis NUMERO Operador NUMERO Cerrar_parentesis
+               | Ubicacion Abrir_parentesis NUMERO Operador NUMERO Cerrar_parentesis ConsultaAON 
+               | Ubicacion ConsultaALL  
+               | Ubicacion Nombre Operador NUMERO 
+               | Ubicacion Nombre Operador NUMERO ConsultaAON
+               | error 
+                ;
+
+ConsultaALL ::=  Todo Abrir_parentesis Seleccionador Nombre Desde Nombre Cerrar_parentesis
+             ;
+ 
+ConsultaAON ::= AND Nombre Operador ComillasSimples Nombre ComillasSimples 
+              | AND NUMERO Operador NUMERO
+              | OR Nombre Operador ComillasSimples Nombre ComillasSimples
+              | OR NUMERO Operador NUMERO
+              | NOT Nombre Operador ComillasSimples Nombre ComillasSimples 
+              | NOT NUMERO Operador NUMERO
+              | error
+               ;
+
+
+
+ConsultaOrderBy ::= OrdenarPor Nombre PUNTO Nombre
+                | OrdenarPor Nombre
+                ;
+
+Operador ::= Mayor_que
+           | Menor_que
+           | Igual
+           | error
+           ;
+
+ConsultaAs ::=  Nombre Nombrar Nombre
+           | Nombre Desde Nombre ConsultaAs
+           | error
+           ;
+
+
+ConsultaNombre ::= Nombre Separador ConsultaNombre            
+               | Nombre 
+               | error
+               ;
