@@ -18,16 +18,16 @@ parser code
 
 :}
 
-terminal String Entero,Flotante,Doble,Cadena,Booleano;
-terminal String Puntoycoma,Dospuntos,Punto;
-terminal String Privado,Publico,Protegido, Estatico,;
-terminal String Abstracto, Clase, Importar, Paquete;
-terminal String Ciclofor,Si,Interrumputor,Mientras,Hacermientras,Caso,Sino;
-terminal String Intentar,Cachar,Romper;
-terminal String Igual,,Menor_que,Mayor_que,Abrir_parentesis,Cerrar_parentesis,Abrir_llave,Cerrar_llave,Suma, Resta, Division,Multiplicacion,AND,OR,NOT;
-terminal String MayorIgual, MenorIgual, Residuo, Corchete_abre, Corchete_cierra,Coma,Igualgual,Factorial;
-terminal String DiagonalInversa, Hueco, Principal;
-terminal String Comilla, Variable, Argumento;
+terminal String ENTERO,FLOTANTE,DOBLE,CADENA,BOOLEANO;
+terminal String PUNTOYCOMA,DOSPUNTOS,PUNTO;
+terminal String PRIVADO,PUBLICO,PROTEGIDO, ESTATICO;
+terminal String ABSTRACTO, CLASE, IMPORTAR, PAQUETE;
+terminal String CICLOFOR,SI,INTERRUMPUTOR,MIENTRAS,HACERMIENTRAS,CASO,SINO;
+terminal String INTENTAR,CACHAR,ROMPER;
+terminal String IGUAL,,MENOR_QUE,MAYOR_QUE,ABRIR_PARENTESIS,CERRAR_PARENTESIS,ABRIR_LLAVE,CERRAR_LLAVE,SUMA, RESTA, DIVISION,MULTIPLICACION,AND,OR,NOT;
+terminal String MAYORIGUAL, MENORIGUAL, RESIDUO, CORCHETE_ABRE, CORCHETE_CIERRA,COMA,IGUALGUAL,FACTORIAL;
+terminal String DIAGONALINVERSA, HUECO, PRINCIPAL;
+terminal String COMILLA, VARIABLE, ARGUMENTO;
 
 non terminal Declaracion, Condicionif, CondificionFor, OperacionAritmetica, DarvalorVariable, Metodos, MetodoMain, Importacion;
 non terminal elMientras, ElhacerMientras, CFor, CondicionWhile, Paqueteria, estructuraClase, ElInterrumputor,EstructuraSi;
