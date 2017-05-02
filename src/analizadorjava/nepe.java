@@ -2,18 +2,17 @@ package analizadorjava; public class nepe {
 
     public static void main( String [ ] args ) {
         int n = 0;
-        String l = " ";
+        String $l = " ";
         boolean 
                 b = true;
         float f = 1.8f;
         double d = 1.5;
         System.out.println("hello world"    )    ;
-        for (int x 
-                = 0; x < 10; x++) {
-            switch(x ) {
+        for (n=0; n < 10; n++) {
+            switch(n) {
                 case 1 :
                     System.
-                            out.println("its: " + x);
+                            out.println("its: " + n);
                     if (d > 2) {
                         System.out. println ( "its mayor: than " + 2);
                     }
@@ -27,7 +26,7 @@ package analizadorjava; public class nepe {
                         b = false 
                                 ;
                     }
-                    System.out.println("its: " + x);
+                    System.out.println("its: " + n);
                     break;
             }
         }

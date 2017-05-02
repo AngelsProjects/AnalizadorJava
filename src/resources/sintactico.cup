@@ -18,129 +18,50 @@ parser code
 
 :}
 
-terminal String ENTERO,FLOTANTE,DOBLE,CADENA,BOOLEANO;
-terminal String PUNTOYCOMA,DOSPUNTOS,PUNTO;
+terminal String ENTERO,FLOTANTE,DOBLE,BOOLEANO,STRING,VERDADERO,FALSO;
+terminal String PUNTOYCOMA,DOSPUNTOS,PUNTO,RETORNAR,VALORINT,VALORFLOAT,VALORDOBLE,VALORBOOLEANO,CADENA;
 terminal String PRIVADO,PUBLICO,PROTEGIDO, ESTATICO;
-terminal String ABSTRACTO, CLASE, IMPORTAR, PAQUETE;
-terminal String CICLOFOR,SI,INTERRUMPUTOR,MIENTRAS,HACERMIENTRAS,CASO,SINO;
+terminal String ABSTRACTO, CLASE, IMPORTAR, PAQUETE;COMENTARIO,
+terminal String CICLOFOR,SI,INTERRUMPUTOR,MIENTRAS,HACER,CASO,SINO;
 terminal String INTENTAR,CACHAR,ROMPER;
-terminal String IGUAL,,MENOR_QUE,MAYOR_QUE,ABRIR_PARENTESIS,CERRAR_PARENTESIS,ABRIR_LLAVE,CERRAR_LLAVE,SUMA, RESTA, DIVISION,MULTIPLICACION,AND,OR,NOT;
-terminal String MAYORIGUAL, MENORIGUAL, RESIDUO, CORCHETE_ABRE, CORCHETE_CIERRA,COMA,IGUALGUAL,FACTORIAL;
+terminal String IGUAL,,MENOR_QUE,MAYOR_QUE,ABRIR_PARENTESIS,CERRAR_PARENTESIS,ABRIR_LLAVE,CERRAR_LLAVE,SUMA, RESTA, DIVISION,MULTIPLICACION,AND,OR,NOT,DISTINTO;
+terminal String MAYORIGUAL, MENORIGUAL, RESIDUO, CORCHETE_ABRE, CORCHETE_CIERRA,COMA,IGUALGUAL,FACTORIAL; 
 terminal String DIAGONALINVERSA, HUECO, PRINCIPAL;
 terminal String COMILLA, VARIABLE, ARGUMENTO;
 
-non terminal Declaracion, Condicionif, CondificionFor, OperacionAritmetica, DarvalorVariable, Metodos, MetodoMain, Importacion;
-non terminal elMientras, ElhacerMientras, CFor, CondicionWhile, Paqueteria, estructuraClase, ElInterrumputor,EstructuraSi;
-non terminal EstructuraPrograma, EstructuraClase
+non terminal Condicionif, CondicionFor, OperacionAritmetica, DarvalorVariable, Metodos, MetodoMain, Importacion;
+non terminal EstructuraMientras, HacerMientras, CFor, Paqueteria, estructuraClase, ElInterrumputor,EstructuraSi;
+non terminal EstructuraClase,Programa,ClasePrincipal, CentroCondicional;
+Start with Programa;
+Programa ::= Paqueteria EstructuraClase|Paqueteria importacion EstructuraClase|error;
 
-non terminal ConsultaOrderBy, ConsultaAs, ConsultaDistinct,ConsultaALL, ConsultaWhere, Consulta, Operador, ConsultaAON, ConsultaNombre, Programa;
+Paqueteria ::= PAQUETE VARIABLE PaqueteriaRuta PUNTOYCCOMA | PAQUETE VARIABLE PUNTOYCOMA | error ;
+PaqueteriaRuta ::= PUNTO VARIABLE | PUNTO VARIABLE PaqueteriaRuta | error;
 
-Programa ::= Consulta Terminar {: System.out.println("Se termino de leer la sentencia"); :}
-                            | error
+importacion ::= IMPORTAR VARIABLE PUNTOYCOMA| IMPORTAR VARIABLE Importacion2 PUNTOYCOMA;
+importacion2 ::= PUNTO VARIABLE | PUNTO VARIABLE importancion2 | error ;
 
+ClasePrincipal ::= PUBLICO ESTATICO HUECO PRINCIPAL ABRIR_PARENTESIS STRING 
+                    CORCHETE_ABRE CORCHETE_CIERRA ARGUMENTO CERRAR_PARENTESIS 
+                    ABRIR_LLAVE EstructuraClase CERRAR_LLAVE | error;
 
-Paqueteria ::= paquete variable puntoycoma | error ;
+EstructuraClase ::= DarvalorVariable | DarvalorVariable EstructuraClase |
+                    Condicionif | Condicionif EstructuraClase |
+                    EstructuraMientras | EstructuraMientras EstructuraClase |
+                    HacerMientras | HacerMientras EstructuraClase |
+                     error;
 
-importacion2 ::= punto variable | punto variable importancion2 | error ;
+DarvalorVariable ::= ENTERO VARIABLE PUNTOYCOMA | ENTERO VARIABLE IGUAL VALORINT PUNTOYCOMA |
+                    FLOTANTE VARIABLE PUNTOYCOMA | FLOTANTE VARIABLE IGUAL VALORFLOAT PUNTOYCOMA |
+                    DOBLE VARIABLE PUNTOYCOMA | DOBLE VARIABLE IGUAL VALORDOBLE PUNTOYCOMA |
+                    BOOLEANO VARIABLE PUNTOYCOMA | BOOLEANO VARIABLE IGUAL VALORBOOLEANO PUNTOYCOMA |
+                    STRING VARIABLE PUNTOYCOMA | STRING VARIABLE IGUAL CADENA PUNTOYCOMA | error;
+                        
+Condicionif ::= SI ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE | error;
 
-importacion ::= importar variable puntoycoma| importar variable importacion2 puntoycoma;
+EstructuraMientras ::= MIENTRAS ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE | error;
 
-EstructuraClase ::= Publico Clase Variable Abrir_llave Estructuraprograma Cerrar_llave 
-            | Privado Clase Variable Abrir_llave Estructuraprograma Cerrar_llave
-            | Protegido Clase variable Abrir_llave Estructuraprograma Cerrar_llave
-            | Estatico Clase variable Abrir_llave Estructuraprograma Cerrar_llave
-            ;
+HacerMientras ::= HACER ABRIR_LLAVE EstructuraClase CERRAR_LLAVE MIENTRAS ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE | error;
 
-MetodoMain ::= Publico Estatico Hueco Principal
-
-
-
-
-
-
-
-
-Declaracion ::=  Seleccionador  ConsultaAs 
-           | Seleccionador  ConsultaAs ConsultaWhere
-           | Seleccionador Nombre PUNTO Nombre Desde Nombre ConsultaOrderBy
-           | Seleccionador Nombre PUNTO Nombre 
-           | Seleccionador Nombre PUNTO Nombre Desde Nombre ConsultaWhere
-           | Seleccionador Nombre PUNTO Nombre ConsultaWhere 
-           | Seleccionador Nombre PUNTO Nombre Desde Nombre inner_join Nombre
-           | Seleccionador Nombre PUNTO Nombre Desde Nombre right_join Nombre
-           | Seleccionador Nombre PUNTO Nombre Desde Nombre left_join Nombre
-           | Seleccionador Nombre Desde Nombre inner_join Nombre
-           | Seleccionador Nombre Desde Nombre right_join Nombre
-           | Seleccionador Nombre Desde Nombre left_join Nombre
-           | Seleccionador Nombre Desde Nombre
-           | Seleccionador Nombre Desde Nombre ConsultaOrderBy
-           | Seleccionador Nombre Desde ConsultaWhere 
-           | Seleccionador Nombre Desde ConsultaWhere ConsultaOrderBy
-           | Seleccionador TodasColumnas 
-           | Seleccionador TodasColumnas Desde Nombre
-           | Seleccionador TodasColumnas Desde Nombre ConsultaWhere
-           | Seleccionador TodasColumnas ConsultaWhere
-           | Seleccionador TodasColumnas Desde Nombre inner_join Nombre
-           | Seleccionador TodasColumnas Desde Nombre right_join Nombre
-           | Seleccionador TodasColumnas Nombre Desde Nombre left_join Nombre
-           | Seleccionador Nombre PUNTO TodasColumnas
-           | Seleccionador Nombre PUNTO TodasColumnas ConsultaWhere  
-           | Seleccionador Nombre PUNTO TodasColumnas inner_join Nombre
-           | Seleccionador Nombre PUNTO TodasColumnas right_join Nombre
-           | Seleccionador Nombre PUNTO TodasColumnas left_join Nombre
-           | Seleccionador ConsultaDistinct Desde Nombre 
-           | Seleccionador ConsultaDistinct Desde Nombre ConsultaWhere
-           | Seleccionador TodasColumnas Separador ConsultaNombre PUNTO Nombre Desde Nombre inner_join Nombre ON Nombre Operador Nombre
-           | error
-           ;
-
-ConsultaDistinct ::= Distinto ConsultaNombre 
-                 | error
-                 ;
-
-ConsultaWhere ::= Ubicacion Nombre Operador ComillasSimples Nombre ComillasSimples 
-               | Ubicacion Nombre Operador ComillasSimples Nombre ComillasSimples ConsultaAON
-               | Ubicacion Abrir_parentesis Nombre Operador ComillasSimples Nombre ComillasSimples Cerrar_parentesis
-               | Ubicacion Abrir_parentesis Nombre Operador ComillasSimples Nombre ComillasSimples Cerrar_parentesis ConsultaAON
-               | Ubicacion Abrir_parentesis NUMERO Operador NUMERO Cerrar_parentesis
-               | Ubicacion Abrir_parentesis NUMERO Operador NUMERO Cerrar_parentesis ConsultaAON 
-               | Ubicacion ConsultaALL  
-               | Ubicacion Nombre Operador NUMERO 
-               | Ubicacion Nombre Operador NUMERO ConsultaAON
-               | error 
-                ;
-
-ConsultaALL ::=  Todo Abrir_parentesis Seleccionador Nombre Desde Nombre Cerrar_parentesis
-             ;
- 
-ConsultaAON ::= AND Nombre Operador ComillasSimples Nombre ComillasSimples 
-              | AND NUMERO Operador NUMERO
-              | OR Nombre Operador ComillasSimples Nombre ComillasSimples
-              | OR NUMERO Operador NUMERO
-              | NOT Nombre Operador ComillasSimples Nombre ComillasSimples 
-              | NOT NUMERO Operador NUMERO
-              | error
-               ;
-
-
-
-ConsultaOrderBy ::= OrdenarPor Nombre PUNTO Nombre
-                | OrdenarPor Nombre
-                ;
-
-Operador ::= Mayor_que
-           | Menor_que
-           | Igual
-           | error
-           ;
-
-ConsultaAs ::=  Nombre Nombrar Nombre
-           | Nombre Desde Nombre ConsultaAs
-           | error
-           ;
-
-
-ConsultaNombre ::= Nombre Separador ConsultaNombre            
-               | Nombre 
-               | error
-               ;
+CentroCondicional ::= CIERTO | FALSO | VALORBOOLEANO |
+             VARIABLE MAYORQUE VARIABLE
