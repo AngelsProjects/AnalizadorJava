@@ -15,6 +15,10 @@ parser code
     {
         report_error("Error de sintaxis. Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: \"" + s.value +"\"",null);
     }
+    public void unrecovered_syntax_error( Symbol s ) throws java.lang.Exception
+    {
+
+    }
 
 :}
 
@@ -62,6 +66,7 @@ Condicionif ::= SI ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LL
 EstructuraMientras ::= MIENTRAS ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE | error;
 
 HacerMientras ::= HACER ABRIR_LLAVE EstructuraClase CERRAR_LLAVE MIENTRAS ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE | error;
+
 
 CentroCondicional ::= CIERTO | FALSO | VALORBOOLEANO |
              VARIABLE MAYORQUE VARIABLE
