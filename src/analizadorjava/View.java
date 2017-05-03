@@ -15,6 +15,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import java_cup.runtime.Symbol;
+import javax.swing.filechooser.FileFilter;
 
 public class View extends javax.swing.JFrame {
 
@@ -30,6 +31,10 @@ public class View extends javax.swing.JFrame {
         path.getDocument().addDocumentListener(new pathListener());
         path.getDocument().putProperty("name", "path");
         PromptSupport.setPrompt("Please write a correct path", path);
+        PromptSupport.setPrompt("HERE YOU CAN SEE THE OUTPUT", output);
+        seleccionado = new JFileChooser();
+        seleccionado.setFileFilter(new TypeOfFile());
+        seleccionado.setDialogTitle("Browse VC file");
     }
 
     /**
@@ -44,10 +49,12 @@ public class View extends javax.swing.JFrame {
         path = new javax.swing.JTextField();
         searchBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        output = new javax.swing.JTextArea();
+        clear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Analizador Java");
+        setResizable(false);
 
         searchBtn.setText("Search");
         searchBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -56,32 +63,32 @@ public class View extends javax.swing.JFrame {
             }
         });
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        output.setEditable(false);
+        output.setColumns(20);
+        output.setRows(5);
+        jScrollPane2.setViewportView(output);
 
-        jButton1.setText("Clear");
+        clear.setText("Clear");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(path, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchBtn))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                .addGap(21, 21, 21)
+                .addComponent(path, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchBtn)
                 .addGap(30, 30, 30))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(clear)
+                .addGap(142, 142, 142))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(20, 20, 20)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(30, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(221, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,12 +97,13 @@ public class View extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(path, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
-                .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 375, Short.MAX_VALUE)
+                .addComponent(clear)
+                .addGap(28, 28, 28))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(99, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(147, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(27, 27, 27)))
         );
 
@@ -104,7 +112,6 @@ public class View extends javax.swing.JFrame {
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         archivo = null;
-        seleccionado = new JFileChooser();
         if (seleccionado.showDialog(null, "Open File") == JFileChooser.APPROVE_OPTION) {
             archivo = seleccionado.getSelectedFile();
             if (archivo.canRead() && archivo.getName().endsWith("java")) {
@@ -154,33 +161,52 @@ public class View extends javax.swing.JFrame {
         });
     }
 
+    class TypeOfFile extends FileFilter {
+
+        public boolean accept(File f) {
+            return f.isDirectory() || f.getName().toLowerCase().endsWith(".vc");
+        }
+
+        //Set description for the type of file that should be display  
+        public String getDescription() {
+            return ".vc files";
+        }
+    }
+    // Clase pathListener es una clase que se encarga de escuchar cada caracter que se inserte en el field de PATH
+
     class pathListener implements DocumentListener {
 
         final String newline = "\n";
 
+        //metodo para escuchar cuando inserte un nuevo caracter
         @Override
         public void insertUpdate(DocumentEvent e) {
             updateLog(e, "insertado en");
         }
 
+        //Metodo para escuchar cuando elimine un caracter
         @Override
         public void removeUpdate(DocumentEvent e) {
             updateLog(e, "removido en");
         }
 
+        //metodo para escuchar cuando cambie un caracter
         @Override
         public void changedUpdate(DocumentEvent e) {
             updateLog(e, "cambio en");
         }
 
+        //metodo de actualizacion por cada uno de los metodos anteriores
         public void updateLog(DocumentEvent e, String action) {
             Document doc = (Document) e.getDocument();
+            //recibe el archivo del directorio de PATH
             archivo = new File(path.getText());
+            //Si el archivo se puede leer y tiene terminacion java
             if (archivo.canRead() && archivo.getName().endsWith("java")) {
                 String[] archivo = {path.getText()};
 
-                FileReader coxis = new FileReader();
-                contentFile = coxis.OpenFile(path.getText());
+                FileReader reader = new FileReader();
+                contentFile = reader.OpenFile(path.getText());
                 contentFile.stream().map((result) -> {
                     return result;
                 }).forEach((result) -> {
@@ -192,9 +218,9 @@ public class View extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton clear;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea output;
     private javax.swing.JTextField path;
     private javax.swing.JButton searchBtn;
     // End of variables declaration//GEN-END:variables

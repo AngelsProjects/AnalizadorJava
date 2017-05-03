@@ -6,7 +6,7 @@ import  java_cup.runtime.Symbol;
 %full
 %line
 %column
-%class Yylex;
+%class Yylex
 %unicode 
 %type Token
 

@@ -75,4 +75,4 @@ CondicionFor ::=
 ElInterrumputor ::= 
 
 CentroCondicional ::= CIERTO | FALSO | VALORBOOLEANO | NOT CIERTO | NOT FALSO | NOT VALORBOOLEANO |
-             VARIABLE MAYORQUE VARIABLE | ;
+             VARIABLE MAYORQUE VARIABLE | error ;
