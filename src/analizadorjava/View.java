@@ -7,21 +7,26 @@ package analizadorjava;
 
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import org.jdesktop.swingx.prompt.PromptSupport;
+import java_cup.runtime.Symbol;
 
 public class View extends javax.swing.JFrame {
 
     File archivo;
     JFileChooser seleccionado;
     ArrayList<String> contentFile;
+    ImageIcon img;
 
     public View() {
         initComponents();
+        img = new ImageIcon("src/resources/atom-icon.png");
+        setIconImage(img.getImage());
         path.getDocument().addDocumentListener(new pathListener());
         path.getDocument().putProperty("name", "path");
         PromptSupport.setPrompt("Please write a correct path", path);
@@ -173,9 +178,7 @@ public class View extends javax.swing.JFrame {
             archivo = new File(path.getText());
             if (archivo.canRead() && archivo.getName().endsWith("java")) {
                 String[] archivo = {path.getText()};
-                
-                
-                
+
                 FileReader coxis = new FileReader();
                 contentFile = coxis.OpenFile(path.getText());
                 contentFile.stream().map((result) -> {

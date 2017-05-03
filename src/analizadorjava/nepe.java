@@ -1,5 +1,5 @@
 package analizadorjava; public class nepe {
-
+int f=0;
     public static void main( String [ ] args ) {
         int n = 0;
         String $l = " ";
