@@ -7,7 +7,6 @@ package analizadorjava;
 
 import java.awt.HeadlessException;
 import java.awt.Rectangle;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,14 +16,18 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
-import org.jdesktop.swingx.prompt.PromptSupport;
-import java_cup.runtime.Symbol;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import org.jdesktop.swingx.prompt.PromptSupport;
 
+/**
+ *
+ * @author mextest
+ */
 public class View extends javax.swing.JFrame {
 
     File archivo;
@@ -32,7 +35,7 @@ public class View extends javax.swing.JFrame {
     ArrayList<String> contentFile;
     ImageIcon img;
     Scanner reader;
-    private final LineNumberModelImpl lineNumberModel;
+    private LineNumberModelImpl lineNumberModel;
     private LineNumberComponent lineNumberComponent;
 
     public class LineNumberModelImpl implements LineNumberModel {
@@ -54,6 +57,17 @@ public class View extends javax.swing.JFrame {
     }
 
     public View() {
+        new Thread() {
+            @Override
+            public void run() {
+                javafx.application.Application.launch(Sounds.class);
+            }
+        }.start();
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         initComponents();
         lineNumberModel = new LineNumberModelImpl();
         lineNumberComponent = new LineNumberComponent(lineNumberModel);
@@ -77,12 +91,12 @@ public class View extends javax.swing.JFrame {
         });
         img = new ImageIcon("src/resources/atom-icon.png");
         setIconImage(img.getImage());
-        path.getDocument().addDocumentListener(new pathListener());
+        path.getDocument().addDocumentListener(new View.pathListener());
         path.getDocument().putProperty("name", "path");
         PromptSupport.setPrompt("Please write a correct path", path);
         PromptSupport.setPrompt("HERE YOU CAN SEE THE OUTPUT", output);
         seleccionado = new JFileChooser();
-        seleccionado.setFileFilter(new TypeOfFile());
+        seleccionado.setFileFilter(new View.TypeOfFile());
         seleccionado.setDialogTitle("Browse java file");
         output.setText(" ");
     }
@@ -96,15 +110,21 @@ public class View extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        clear = new javax.swing.JButton();
         path = new javax.swing.JTextField();
         searchBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         output = new javax.swing.JTextArea();
-        clear = new javax.swing.JButton();
+        clear1 = new javax.swing.JButton();
+
+        clear.setText("Clear");
+        clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearActionPerformed(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Analizador Java");
-        setResizable(false);
 
         searchBtn.setText("Search");
         searchBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -117,10 +137,10 @@ public class View extends javax.swing.JFrame {
         output.setRows(5);
         jScrollPane2.setViewportView(output);
 
-        clear.setText("Clear");
-        clear.addActionListener(new java.awt.event.ActionListener() {
+        clear1.setText("Clear");
+        clear1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearActionPerformed(evt);
+                clear1ActionPerformed(evt);
             }
         });
 
@@ -128,37 +148,31 @@ public class View extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(path, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchBtn)
-                .addGap(30, 30, 30))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(clear)
-                .addGap(142, 142, 142))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(20, 20, 20)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(213, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(clear1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(path, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(searchBtn)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(61, 61, 61)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(path, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 375, Short.MAX_VALUE)
-                .addComponent(clear)
-                .addGap(28, 28, 28))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(147, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(27, 27, 27)))
+                    .addComponent(clear1))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -167,8 +181,8 @@ public class View extends javax.swing.JFrame {
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         archivo = null;
         if (seleccionado.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            archivo = seleccionado.getSelectedFile();
             try {
+                archivo = seleccionado.getSelectedFile();
                 if (archivo.canRead() && archivo.getName().endsWith("java")) {
                     archivo = seleccionado.getSelectedFile();
                     path.setText(seleccionado.getSelectedFile().getAbsolutePath());
@@ -181,6 +195,8 @@ public class View extends javax.swing.JFrame {
             }
         } else {
             path.setText("");
+            Sounds s = new Sounds();
+            s.worng();
             JOptionPane.showMessageDialog(null, "Please select a java file");
         }
     }//GEN-LAST:event_searchBtnActionPerformed
@@ -188,6 +204,10 @@ public class View extends javax.swing.JFrame {
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
         output.setText("");
     }//GEN-LAST:event_clearActionPerformed
+
+    private void clear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1ActionPerformed
+        output.setText("");
+    }//GEN-LAST:event_clear1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -200,7 +220,7 @@ public class View extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -215,10 +235,13 @@ public class View extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new View().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new View().setVisible(true);
+            }
         });
     }
 
@@ -279,13 +302,13 @@ public class View extends javax.swing.JFrame {
             }
         }
     }
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clear;
+    private javax.swing.JButton clear1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea output;
     private javax.swing.JTextField path;
     private javax.swing.JButton searchBtn;
     // End of variables declaration//GEN-END:variables
+
 }
