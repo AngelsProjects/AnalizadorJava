@@ -1,4 +1,4 @@
-package analizadorjava; public class nepe {
+package resources; public class nepe {
 int f=0;
     public static void main( String [ ] args ) {
         int n = 0;

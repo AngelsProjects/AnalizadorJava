@@ -5,8 +5,15 @@
  */
 package analizadorjava;
 
+import java.awt.HeadlessException;
+import java.awt.Rectangle;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -16,6 +23,7 @@ import javax.swing.text.Document;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import java_cup.runtime.Symbol;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.BadLocationException;
 
 public class View extends javax.swing.JFrame {
 
@@ -23,9 +31,50 @@ public class View extends javax.swing.JFrame {
     JFileChooser seleccionado;
     ArrayList<String> contentFile;
     ImageIcon img;
+    Scanner reader;
+    private final LineNumberModelImpl lineNumberModel;
+    private LineNumberComponent lineNumberComponent;
+
+    public class LineNumberModelImpl implements LineNumberModel {
+
+        @Override
+        public int getNumberLines() {
+            int a = output.getLineCount();
+            return a;
+        }
+
+        @Override
+        public Rectangle getLineRect(int line) {
+            try {
+                return output.modelToView(output.getLineStartOffset(line));
+            } catch (BadLocationException e) {
+                return new Rectangle();
+            }
+        }
+    }
 
     public View() {
         initComponents();
+        lineNumberModel = new LineNumberModelImpl();
+        lineNumberComponent = new LineNumberComponent(lineNumberModel);
+        jScrollPane2.setRowHeaderView(lineNumberComponent);
+        lineNumberComponent.setAlignment(LineNumberComponent.CENTER_ALIGNMENT);
+        output.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent arg0) {
+                lineNumberComponent.adjustWidth();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent arg0) {
+                lineNumberComponent.adjustWidth();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent arg0) {
+                lineNumberComponent.adjustWidth();
+            }
+        });
         img = new ImageIcon("src/resources/atom-icon.png");
         setIconImage(img.getImage());
         path.getDocument().addDocumentListener(new pathListener());
@@ -34,7 +83,8 @@ public class View extends javax.swing.JFrame {
         PromptSupport.setPrompt("HERE YOU CAN SEE THE OUTPUT", output);
         seleccionado = new JFileChooser();
         seleccionado.setFileFilter(new TypeOfFile());
-        seleccionado.setDialogTitle("Browse VC file");
+        seleccionado.setDialogTitle("Browse java file");
+        output.setText(" ");
     }
 
     /**
@@ -63,12 +113,16 @@ public class View extends javax.swing.JFrame {
             }
         });
 
-        output.setEditable(false);
         output.setColumns(20);
         output.setRows(5);
         jScrollPane2.setViewportView(output);
 
         clear.setText("Clear");
+        clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,7 +130,7 @@ public class View extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(path, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+                .addComponent(path, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchBtn)
                 .addGap(30, 30, 30))
@@ -88,7 +142,7 @@ public class View extends javax.swing.JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addGap(20, 20, 20)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(221, Short.MAX_VALUE)))
+                    .addContainerGap(213, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,19 +166,28 @@ public class View extends javax.swing.JFrame {
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         archivo = null;
-        if (seleccionado.showDialog(null, "Open File") == JFileChooser.APPROVE_OPTION) {
+        if (seleccionado.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             archivo = seleccionado.getSelectedFile();
-            if (archivo.canRead() && archivo.getName().endsWith("java")) {
-                path.setText(seleccionado.getSelectedFile().getAbsolutePath());
-            } else {
-                path.setText("");
-                JOptionPane.showMessageDialog(null, "Please select a java file");
+            try {
+                if (archivo.canRead() && archivo.getName().endsWith("java")) {
+                    archivo = seleccionado.getSelectedFile();
+                    path.setText(seleccionado.getSelectedFile().getAbsolutePath());
+                } else {
+                    path.setText("");
+                    JOptionPane.showMessageDialog(null, "Please select a java file");
+                }
+            } catch (HeadlessException ex) {
+                Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             path.setText("");
             JOptionPane.showMessageDialog(null, "Please select a java file");
         }
     }//GEN-LAST:event_searchBtnActionPerformed
+
+    private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
+        output.setText("");
+    }//GEN-LAST:event_clearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -154,22 +217,22 @@ public class View extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new View().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new View().setVisible(true);
         });
     }
 
     class TypeOfFile extends FileFilter {
 
+        @Override
         public boolean accept(File f) {
-            return f.isDirectory() || f.getName().toLowerCase().endsWith(".vc");
+            return f.isDirectory() || f.getName().toLowerCase().endsWith(".java");
         }
 
         //Set description for the type of file that should be display  
+        @Override
         public String getDescription() {
-            return ".vc files";
+            return ".java files";
         }
     }
     // Clase pathListener es una clase que se encarga de escuchar cada caracter que se inserte en el field de PATH
@@ -203,15 +266,36 @@ public class View extends javax.swing.JFrame {
             archivo = new File(path.getText());
             //Si el archivo se puede leer y tiene terminacion java
             if (archivo.canRead() && archivo.getName().endsWith("java")) {
-                String[] archivo = {path.getText()};
 
+                try {
+                    //reader = new Scanner(archivo);
+
+                    BufferedReader in = null;
+                    in = new BufferedReader(new java.io.FileReader(archivo));
+                    String line = in.readLine();
+                    while (line != null) {
+                        output.append(line + "\n");
+                        line = in.readLine();
+                    }
+
+                    /*
+                    while (reader.hasNextLine()) {
+                        String i = reader.nextLine();
+                        output.append(i);
+                    }
+                    reader.close();*/
+                } catch (IOException ex) {
+                }
+
+                /* String[] archivo = {path.getText()};
+                
                 FileReader reader = new FileReader();
                 contentFile = reader.OpenFile(path.getText());
                 contentFile.stream().map((result) -> {
                     return result;
                 }).forEach((result) -> {
                     System.out.println(result);
-                });
+                });*/
             }
         }
     }
