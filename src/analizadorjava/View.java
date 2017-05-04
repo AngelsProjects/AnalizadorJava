@@ -268,34 +268,14 @@ public class View extends javax.swing.JFrame {
             if (archivo.canRead() && archivo.getName().endsWith("java")) {
 
                 try {
-                    //reader = new Scanner(archivo);
-
-                    BufferedReader in = null;
-                    in = new BufferedReader(new java.io.FileReader(archivo));
-                    String line = in.readLine();
-                    while (line != null) {
-                        output.append(line + "\n");
-                        line = in.readLine();
-                    }
-
-                    /*
+                    reader = new Scanner(archivo);
                     while (reader.hasNextLine()) {
                         String i = reader.nextLine();
-                        output.append(i);
+                        output.append(i + "\n");
                     }
-                    reader.close();*/
+                    reader.close();
                 } catch (IOException ex) {
                 }
-
-                /* String[] archivo = {path.getText()};
-                
-                FileReader reader = new FileReader();
-                contentFile = reader.OpenFile(path.getText());
-                contentFile.stream().map((result) -> {
-                    return result;
-                }).forEach((result) -> {
-                    System.out.println(result);
-                });*/
             }
         }
     }
