@@ -168,10 +168,13 @@ public class View extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(path, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(clear1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(clear1)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -180,6 +183,7 @@ public class View extends javax.swing.JFrame {
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         archivo = null;
+        Sounds s = new Sounds();
         if (seleccionado.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             try {
                 archivo = seleccionado.getSelectedFile();
@@ -188,6 +192,7 @@ public class View extends javax.swing.JFrame {
                     path.setText(seleccionado.getSelectedFile().getAbsolutePath());
                 } else {
                     path.setText("");
+                    s.worng();
                     JOptionPane.showMessageDialog(null, "Please select a java file");
                 }
             } catch (HeadlessException ex) {
@@ -195,7 +200,6 @@ public class View extends javax.swing.JFrame {
             }
         } else {
             path.setText("");
-            Sounds s = new Sounds();
             s.worng();
             JOptionPane.showMessageDialog(null, "Please select a java file");
         }

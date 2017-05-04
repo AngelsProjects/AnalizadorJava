@@ -44,18 +44,20 @@ public class Sounds extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        BorderPane pane = new BorderPane();
+      //  worng();
+       /* BorderPane pane = new BorderPane();
         Scene scene = new Scene(pane, 500, 500);
         stage.setScene(scene);
 
         Label label = new Label("Hello");
         pane.setCenter(label);
 
-        stage.show();
+        stage.show();*/
     }
 
     public static void main(String[] args) {
         Application.launch(args);
+        
     }
 
     public static Sounds waitForSound() {
