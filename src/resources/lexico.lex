@@ -64,7 +64,7 @@ comentarios=[/][/].+
 {double}{return new Symbol(sym.DOBLE,yyline,yycolumn,yytext());}{{ {} 
 {else}{return new Symbol(sym.SINO,yyline,yycolumn,yytext());}
 {float}{return new Symbol(sym.FLOTANTE,yyline,yycolumn,yytext());}
-{for}{return new Symbol(sym.CICLOFOR,yyline,yycolumn,yytext());}
+{for}{return new Symbol(sym.PARA,yyline,yycolumn,yytext());}
 {if}{return new Symbol(sym.SI,yyline,yycolumn,yytext());} 
 {import}{return new Symbol(sym.IMPORTAR,yyline,yycolumn,yytext());} 
 {int}{return new Symbol(sym.ENTERO,yyline,yycolumn,yytext());} 
