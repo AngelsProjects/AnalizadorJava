@@ -13,7 +13,14 @@ parser code
 
     public void sintax_error(Symbol s)
     {
-        report_error("Error de sintaxis en Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: \"" + s.value +"\"",null);
+        Wrapper wrapper = Wrapper.getInstance();
+        wrapper.setError()=true;
+        if(wrapper.getMessage().length()>0){
+        wrapper.setMessage(wrapper.getMessage()+"\nError de sintaxis en Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: " + s.value);
+        }else{
+         wrapper.setMessage("TE MAMASTE WEY!!!\nError de sintaxis en Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: " + s.value);
+        }
+      //  report_error("Error de sintaxis en Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: \"" + s.value +"\"",null);
     }
     public void unrecovered_syntax_error( Symbol s ) throws java.lang.Exception
     {
@@ -24,26 +31,28 @@ parser code
 
 terminal String ENTERO,FLOTANTE,DOBLE,BOOLEANO,STRING,VERDADERO,FALSO;
 terminal String PUNTOYCOMA,DOSPUNTOS,PUNTO,RETORNAR,VALORINT,VALORFLOAT,VALORDOBLE,VALORBOOLEANO,CADENA;
-terminal String PRIVADO,PUBLICO,PROTEGIDO, ESTATICO;
-terminal String ABSTRACTO, CLASE, IMPORTAR, PAQUETE;COMENTARIO,
+terminal String PRIVADO,PUBLICO,PROTEGIDO,ESTATICO;
+terminal String CLASE,IMPORTAR,PAQUETE,COMENTARIO;
 terminal String PARA,SI,INTERRUMPUTOR,MIENTRAS,HACER,CASO,SINO;
 terminal String INTENTAR,CACHAR,ROMPER;
-terminal String IGUAL,ABRIR_PARENTESIS,CERRAR_PARENTESIS,ABRIR_LLAVE,CERRAR_LLAVE, CORCHETE_ABRE, CORCHETE_CIERRA,COMA, SUMA, RESTA, DIVISION,MULTIPLICACION,AND,OR,NOT;
-terminal String MAYORIGUAL, MENORIGUAL, RESIDUO,IGUALGUAL,DISTINTO,MENORQUE,MAYORQUE; 
-terminal String DIAGONALINVERSA, HUECO, PRINCIPAL;
-terminal String COMILLA, VARIABLE, ARGUMENTO;
+terminal String IGUAL,ABRIR_PARENTESIS,CERRAR_PARENTESIS,ABRIR_LLAVE,CERRAR_LLAVE, CORCHETE_ABRE, CORCHETE_CIERRA, SUMA, RESTA, DIVISION,MULTIPLICACION,AND,OR,NOT;
+terminal String MAYORIGUAL,MENORIGUAL,RESIDUO,IGUALIGUAL,DISTINTO,MENORQUE,MAYORQUE; 
+terminal String HUECO,PRINCIPAL;
+terminal String COMILLA,VARIABLE,ARGUMENTO;
 
-non terminal Condicionif, CondicionFor, OperacionAritmetica, DarvalorVariable, DarvalorVariable2, Importacion, Importacion2;
-non terminal EstructuraMientras, HacerMientras, Paqueteria, ElInterrumputor;
-non terminal EstructuraClase,Programa,ClasePrincipal, CentroCondicional, SumaOResta, TiposCasos, Casos, OpcionesInterruptor;
-Start with Programa;
-Programa ::= Paqueteria EstructuraClase|Paqueteria Importacion EstructuraClase;
+non terminal Condicionif, CondicionFor, OperacionAritmetica, DarvalorVariable, DarvalorVariable2, DarvalorVariable3,DarvalorVariable4,Importacion, Importacion2;
+non terminal EstructuraMientras, HacerMientras, Paqueteria, ElInterrumputor, Comparadores,PaqueteriaRuta,UnaClase,TipoVariable1,TipoVariable2,Valores1,InicioVar;
+non terminal EstructuraClase,Programa,ClasePrincipal, CentroCondicional, SumaOResta, TiposCasos, Casos,TipoValor,Operaciones,MasOperacion,TipoOperacion,Signos;
+start with Programa;
+Programa ::= Paqueteria UnaClase | Paqueteria Importacion UnaClase;
 
-Paqueteria ::= PAQUETE VARIABLE PaqueteriaRuta PUNTOYCCOMA | PAQUETE VARIABLE PUNTOYCOMA;
+Paqueteria ::= PAQUETE VARIABLE PaqueteriaRuta PUNTOYCOMA | PAQUETE VARIABLE PUNTOYCOMA;
 PaqueteriaRuta ::= PUNTO VARIABLE | PUNTO VARIABLE PaqueteriaRuta;
 
 Importacion ::= IMPORTAR VARIABLE PUNTOYCOMA| IMPORTAR VARIABLE Importacion2 PUNTOYCOMA;
-Importacion2 ::= PUNTO VARIABLE | PUNTO VARIABLE Importancion2;
+Importacion2 ::= PUNTO VARIABLE | PUNTO VARIABLE Importacion2;
+
+UnaClase ::= PUBLICO CLASE VARIABLE ABRIR_LLAVE ClasePrincipal CERRAR_LLAVE;
 
 ClasePrincipal ::= PUBLICO ESTATICO HUECO PRINCIPAL ABRIR_PARENTESIS STRING 
                     CORCHETE_ABRE CORCHETE_CIERRA ARGUMENTO CERRAR_PARENTESIS 
@@ -52,33 +61,53 @@ ClasePrincipal ::= PUBLICO ESTATICO HUECO PRINCIPAL ABRIR_PARENTESIS STRING
 EstructuraClase ::= DarvalorVariable | DarvalorVariable EstructuraClase |
                     Condicionif | Condicionif EstructuraClase |
                     EstructuraMientras | EstructuraMientras EstructuraClase |
-                    HacerMientras | HacerMientras EstructuraClase;
+                    HacerMientras | HacerMientras EstructuraClase |
+                    ElInterrumputor | ElInterrumputor EstructuraClase |
+                    OperacionAritmetica | OperacionAritmetica EstructuraClase;
 
+
+OperacionAritmetica ::= InicioVar Operaciones PUNTOYCOMA | VARIABLE IGUAL Operaciones PUNTOYCOMA;
+
+Operaciones ::= ABRIR_PARENTESIS Operaciones CERRAR_PARENTESIS | ABRIR_PARENTESIS Operaciones CERRAR_PARENTESIS MasOperacion | VARIABLE | VARIABLE MasOperacion | Valores1 MasOperacion;
+MasOperacion ::= Signos Operaciones;
+Signos ::= SUMA | RESTA | DIVISION | MULTIPLICACION;
+
+
+TipoVariable1 ::= ENTERO | FLOTANTE | DOBLE;
+TipoVariable2 ::= BOOLEANO STRING;
+
+Valores1 ::= VALORINT | VALORFLOAT | VALORDOBLE;
 DarvalorVariable ::= PRIVADO DarvalorVariable2 | PUBLICO DarvalorVariable2 | PROTEGIDO DarvalorVariable2 | ESTATICO DarvalorVariable2 | DarvalorVariable2;
 
-DarvalorVariable2 ::= ENTERO VARIABLE PUNTOYCOMA | FLOTANTE VARIABLE PUNTOYCOMA | DOBLE VARIABLE PUNTOYCOMA |
-                    BOOLEANO VARIABLE PUNTOYCOMA | BOOLEANO VARIABLE IGUAL VALORBOOLEANO PUNTOYCOMA |
-                    STRING VARIABLE PUNTOYCOMA | STRING VARIABLE IGUAL COMILLA CADENA COMILLA PUNTOYCOMA;
-DeclaracionVariable3 :: ENTERO VARIABLE IGUAL VALORINT PUNTOYCOMA |
-                     FLOTANTE VARIABLE IGUAL VALORFLOAT PUNTOYCOMA |
-                     DOBLE VARIABLE IGUAL VALORDOBLE PUNTOYCOMA;
+DarvalorVariable2 ::= TipoVariable1 VARIABLE PUNTOYCOMA |
+                        TipoVariable2 VARIABLE PUNTOYCOMA | DarvalorVariable3 | DarvalorVariable4;
                         
-Condicionif ::= SI ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE |
-                    SI ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE SINO ABRIR_LLAVE EstructuraClase CERRAR_LLAVE;
+InicioVar ::= TipoVariable1 VARIABLE IGUAL;
+
+
+DarvalorVariable3 ::= InicioVar Valores1 PUNTOYCOMA;
+
+DarvalorVariable4 ::= BOOLEANO VARIABLE IGUAL VALORBOOLEANO PUNTOYCOMA | STRING VARIABLE IGUAL COMILLA CADENA COMILLA PUNTOYCOMA;
+
+Condicionif ::= SI ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE|
+                SI ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE SINO ABRIR_LLAVE EstructuraClase CERRAR_LLAVE;
 
 EstructuraMientras ::= MIENTRAS ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE;
 
 HacerMientras ::= HACER ABRIR_LLAVE EstructuraClase CERRAR_LLAVE MIENTRAS ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE;
 
-CondicionFor ::= PARA ABRIR_PARENTESIS DeclaracionVariable3 CentroCondicional PUNTOYCOMA SumaOResta CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE;
+CondicionFor ::= PARA ABRIR_PARENTESIS DarvalorVariable3 CentroCondicional PUNTOYCOMA SumaOResta CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE;
 
 SumaOResta ::= VARIABLE SUMA SUMA | SUMA SUMA VARIABLE | RESTA RESTA VARIABLE | VARIABLE RESTA RESTA;
 
-ElInterrumputor ::= INTERRUMPUTOR ABRIR_PARENTESIS TiposCasos CERRAR_PARENTESIS ABRIR_LLAVE Casos CERRAR_LLAVE
+ElInterrumputor ::= INTERRUMPUTOR ABRIR_PARENTESIS TiposCasos CERRAR_PARENTESIS ABRIR_LLAVE Casos CERRAR_LLAVE;
 
 Casos ::= CASO TiposCasos DOSPUNTOS EstructuraClase ROMPER PUNTOYCOMA;
 
-TiposCasos ::= VARIABLE | CentroCondicional | VALORINT |VALORFLOAT |VALORDOBLE | VALORBOOLEANO | CADENA;
+TiposCasos ::= VARIABLE | CentroCondicional | VALORINT |VALORFLOAT |VALORDOBLE | CADENA;
 
-CentroCondicional ::= CIERTO | FALSO | VALORBOOLEANO | NOT CIERTO | NOT FALSO | NOT VALORBOOLEANO |
-             VARIABLE MAYORQUE VARIABLE;
+CentroCondicional ::= VERDADERO | FALSO | VALORBOOLEANO | NOT VERDADERO | NOT FALSO | NOT VALORBOOLEANO |
+             VARIABLE Comparadores VARIABLE | VARIABLE Comparadores TipoValor | TipoValor Comparadores VARIABLE | TipoValor Comparadores TipoValor;
+Comparadores ::= MAYORQUE | MENORQUE | MAYORIGUAL | MENORIGUAL | IGUALIGUAL | DISTINTO;
+
+TipoValor ::= Valores1 | VALORBOOLEANO | CADENA;
