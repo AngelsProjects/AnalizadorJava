@@ -392,12 +392,18 @@ public class View extends javax.swing.JFrame {
             if (archivo.canRead() && archivo.getName().endsWith("java")) {
 
                 try {
+                    output.setText("");
+                    //lee el archivo y lo gusarda en listSymbol
+                    listSymbol = LexerExecute.execute(archivo);  
                     reader = new Scanner(archivo);
                     while (reader.hasNextLine()) {
                         String i = reader.nextLine();
                         output.append(i + "\n");
                     }
                     reader.close();
+                    
+                    
+                    
                 } catch (IOException ex) {
                 }
             }

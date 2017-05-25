@@ -47,6 +47,11 @@ numeroFloat=([+|-]*[0-9]*.[0-9]+[f])|([+|-]*[0-9]+[f])
 numeroDoble=([+|-]*[0-9]*.[0-9]+)|([+|-]*[0-9]+)
 boleano=[true|false]
 comentarios=[/][/].+
+
+comment             = {trad_comment} | {line_comment} | {doc_comment}
+trad_comment        = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+line_comment        = "//" ([^\r\n])* {newline}?
+doc_comment         = "/*" "*"+ [^/*] ~"*/"
 %%
 
 args        {return new Symbol(sym.ARGUMENTO,yyline,yycolumn,yytext());}
@@ -112,13 +117,12 @@ args        {return new Symbol(sym.ARGUMENTO,yyline,yycolumn,yytext());}
 "&&"    {return new Symbol(sym.AND,yyline,yycolumn,yytext());}
 "||"    {return new Symbol(sym.OR,yyline,yycolumn,yytext());}
 (\n|\r|\t|" ")  { }
-.   { 
-        Wrapper wrapper = Wrapper.getInstance();
-        wrapper.setError()=true;
+{comment}           { System.out.println("Comment recognize :\n" + yytext().substring(2, yylength()-2)); }
+<<EOF>>             { return newSym(sym.EOF,"");}
+.                   {  Wrapper wrapper = Wrapper.getInstance();
+        if(wrapper.getError()==false)wrapper.setError(true);
         if(wrapper.getMessage().length()>0){
             wrapper.setMessage(wrapper.getMessage()+"\nError de lexico en Linea: " + (yyline+1) + "Columna: " + yycolumn+1 + ". Texto: " + yytext());
         }else{
             wrapper.setMessage("TE MAMASTE WEY!!!\nError de sintaxis en Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: " + yytext());
-        }
-        //System.out.println("Error Lexico " + (yyline+1) + " " + (yycolumn+1) + " " + yytext() );
-    }
+        }}

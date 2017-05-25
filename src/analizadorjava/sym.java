@@ -70,7 +70,7 @@ public class sym {
   public static final int DIVISION = 46;
   public static final int DEFECTO = 22;
   public static final int FLOTANTE = 3;
-  public static final int MULTIPLICACION = 47;
+  public static final int MULTIPLICACION = 47;/*
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -135,6 +135,6 @@ public class sym {
   "COMILLA",
   "VARIABLE",
   "ARGUMENTO"
-  };
+  };*/
 }
 
