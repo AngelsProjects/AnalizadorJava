@@ -3,24 +3,16 @@ import java.io.*;
 import java_cup.runtime.*;
 
 parser code
-{:
-    public static void main(String args[]) throws Exception
-    {
-        new parser(new Yylex(new FileInputStream(args[0]))).parse();
-        //new parser(new Yylex(System.in)).parse();
-        
-    }    
-
+{:   
     public void sintax_error(Symbol s)
     {
         Wrapper wrapper = Wrapper.getInstance();
-        wrapper.setError()=true;
+        wrapper.setError(true);
         if(wrapper.getMessage().length()>0){
         wrapper.setMessage(wrapper.getMessage()+"\nError de sintaxis en Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: " + s.value);
         }else{
          wrapper.setMessage("TE MAMASTE WEY!!!\nError de sintaxis en Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: " + s.value);
         }
-      //  report_error("Error de sintaxis en Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: \"" + s.value +"\"",null);
     }
     public void unrecovered_syntax_error( Symbol s ) throws java.lang.Exception
     {
@@ -31,10 +23,9 @@ parser code
 
 terminal String ENTERO,FLOTANTE,DOBLE,BOOLEANO,STRING,VERDADERO,FALSO;
 terminal String PUNTOYCOMA,DOSPUNTOS,PUNTO,RETORNAR,VALORINT,VALORFLOAT,VALORDOBLE,VALORBOOLEANO,CADENA;
-terminal String PRIVADO,PUBLICO,PROTEGIDO,ESTATICO;
+terminal String PRIVADO,PUBLICO,PROTEGIDO,ESTATICO,DEFECTO;
 terminal String CLASE,IMPORTAR,PAQUETE,COMENTARIO;
-terminal String PARA,SI,INTERRUMPUTOR,MIENTRAS,HACER,CASO,SINO;
-terminal String INTENTAR,CACHAR,ROMPER;
+terminal String PARA,SI,INTERRUMPUTOR,MIENTRAS,HACER,CASO,SINO,ROMPER;
 terminal String IGUAL,ABRIR_PARENTESIS,CERRAR_PARENTESIS,ABRIR_LLAVE,CERRAR_LLAVE, CORCHETE_ABRE, CORCHETE_CIERRA, SUMA, RESTA, DIVISION,MULTIPLICACION,AND,OR,NOT;
 terminal String MAYORIGUAL,MENORIGUAL,RESIDUO,IGUALIGUAL,DISTINTO,MENORQUE,MAYORQUE; 
 terminal String HUECO,PRINCIPAL;
@@ -42,7 +33,7 @@ terminal String COMILLA,VARIABLE,ARGUMENTO;
 
 non terminal Condicionif, CondicionFor, OperacionAritmetica, DarvalorVariable, DarvalorVariable2, DarvalorVariable3,DarvalorVariable4,Importacion, Importacion2;
 non terminal EstructuraMientras, HacerMientras, Paqueteria, ElInterrumputor, Comparadores,PaqueteriaRuta,UnaClase,TipoVariable1,TipoVariable2,Valores1,InicioVar;
-non terminal EstructuraClase,Programa,ClasePrincipal, CentroCondicional, SumaOResta, TiposCasos, Casos,TipoValor,Operaciones,MasOperacion,TipoOperacion,Signos;
+non terminal EstructuraClase,Programa,ClasePrincipal, CentroCondicional, SumaOResta, TiposCasos, Casos,TipoValor,Operaciones,MasOperacion,Signos;
 start with Programa;
 Programa ::= Paqueteria UnaClase | Paqueteria Importacion UnaClase;
 
@@ -102,7 +93,8 @@ SumaOResta ::= VARIABLE SUMA SUMA | SUMA SUMA VARIABLE | RESTA RESTA VARIABLE | 
 
 ElInterrumputor ::= INTERRUMPUTOR ABRIR_PARENTESIS TiposCasos CERRAR_PARENTESIS ABRIR_LLAVE Casos CERRAR_LLAVE;
 
-Casos ::= CASO TiposCasos DOSPUNTOS EstructuraClase ROMPER PUNTOYCOMA;
+Casos ::= CASO TiposCasos DOSPUNTOS EstructuraClase ROMPER PUNTOYCOMA | DEFECTO DOSPUNTOS EstructuraClase ROMPER PUNTOYCOMA |
+            CASO TiposCasos DOSPUNTOS EstructuraClase ROMPER PUNTOYCOMA Casos | DEFECTO DOSPUNTOS EstructuraClase ROMPER PUNTOYCOMA Casos;
 
 TiposCasos ::= VARIABLE | CentroCondicional | VALORINT |VALORFLOAT |VALORDOBLE | CADENA;
 

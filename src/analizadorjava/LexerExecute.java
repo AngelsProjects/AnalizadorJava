@@ -18,7 +18,7 @@ public class LexerExecute {
         ArrayList<Symbol> listSym = new ArrayList();
         try {
             Yylex lexer = new Yylex(new java.io.FileReader(file));
-            for (sym = lexer.next_token(); sym.sym != 0; sym = lexer.next_token()) {
+            for(sym = lexer.next_token(); sym.sym != 0; sym = lexer.next_token()) {
                 listSym.add(sym);
             }
         } catch (Exception e) {
@@ -27,6 +27,7 @@ public class LexerExecute {
     }
 
     private static void initList() {
+        
         tokens.add(0, "EOF");
         tokens.add(1, "error");
         tokens.add(2, "ENTERO");
@@ -61,31 +62,31 @@ public class LexerExecute {
         tokens.add(31, "HACER");
         tokens.add(32, "CASO");
         tokens.add(33, "SINO");
-        tokens.add(34, "INTENTAR");
-        tokens.add(35, "CACHAR");
-        tokens.add(36, "ROMPER");
-        tokens.add(37, "IGUAL");
-        tokens.add(38, "ABRIR_PARENTESIS");
-        tokens.add(39, "CERRAR_PARENTESIS");
-        tokens.add(40, "ABRIR_LLAVE");
-        tokens.add(41, "CERRAR_LLAVE");
-        tokens.add(42, "CORCHETE_ABRE");
-        tokens.add(43, "CORCHETE_CIERRA");
-        tokens.add(44, "SUMA");
-        tokens.add(45, "RESTA");
-        tokens.add(46, "DIVISION");
-        tokens.add(47, "MULTIPLICACION");
-        tokens.add(48, "AND");
-        tokens.add(49, "OR");
-        tokens.add(50, "NOT");
-        tokens.add(51, "MAYORIGUAL");
-        tokens.add(52, "MENORIGUAL");
-        tokens.add(53, "RESIDUO");
-        tokens.add(54, "IGUALIGUAL");
-        tokens.add(55, "DISTINTO");
-        tokens.add(56, "MENORQUE");
-        tokens.add(57, "MAYORQUE");
-        tokens.add(58, "HUECO");
+        tokens.add(34, "ROMPER");
+        tokens.add(35, "IGUAL");
+        tokens.add(36, "ABRIR_PARENTESIS");
+        tokens.add(37, "CERRAR_PARENTESIS");
+        tokens.add(38, "ABRIR_LLAVE");
+        tokens.add(39, "CERRAR_LLAVE");
+        tokens.add(40, "CORCHETE_ABRE");
+        tokens.add(41, "SUMA");
+        tokens.add(42, "RESTA");
+        tokens.add(43, "DIVISON");
+        tokens.add(44, "MULTIPLICACION");
+        tokens.add(45, "AND");
+        tokens.add(46, "OR");
+        tokens.add(47, "NOT");
+        tokens.add(48, "MAYORIGUAL");
+        tokens.add(49, "MENORIGUAL");
+        tokens.add(50, "RESIDUO");
+        tokens.add(51, "IGUALIGUAL");
+        tokens.add(52, "DISTINTO");
+        tokens.add(53, "MENORQUE");
+        tokens.add(54, "MAYORQUE");
+        tokens.add(55, "HUECO");
+        tokens.add(56, "PRINCIPAL");
+        tokens.add(57, "COMILLA");
+        tokens.add(58, "VARIABLE");
         tokens.add(59, "PRINCIPAL");
         tokens.add(60, "COMILLA");
         tokens.add(61, "VARIABLE");

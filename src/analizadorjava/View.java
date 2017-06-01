@@ -5,6 +5,7 @@
  */
 package analizadorjava;
 
+import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.Rectangle;
 import java.io.File;
@@ -22,6 +23,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Document;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
@@ -33,7 +35,6 @@ public class View extends javax.swing.JFrame {
 
     File archivo;
     JFileChooser seleccionado;
-    ArrayList<String> contentFile;
     ImageIcon img;
     Scanner reader;
     private LineNumberModelImpl lineNumberModel;
@@ -126,11 +127,11 @@ public class View extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        IdText = new javax.swing.JLabel();
+        NameText = new javax.swing.JLabel();
+        ValueText = new javax.swing.JLabel();
+        LineText = new javax.swing.JLabel();
+        ColumnText = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
@@ -162,8 +163,18 @@ public class View extends javax.swing.JFrame {
         });
 
         jButton1.setText("Previous");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Next");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Token ID:");
 
@@ -175,19 +186,29 @@ public class View extends javax.swing.JFrame {
 
         jLabel5.setText("Column:");
 
-        jLabel6.setText("jLabel6");
+        IdText.setText("jLabel6");
 
-        jLabel7.setText("jLabel7");
+        NameText.setText("jLabel7");
 
-        jLabel8.setText("jLabel8");
+        ValueText.setText("jLabel8");
 
-        jLabel9.setText("jLabel9");
+        LineText.setText("jLabel9");
 
-        jLabel10.setText("jLabel10");
+        ColumnText.setText("jLabel10");
 
         jButton3.setText("First");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Last");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -210,11 +231,11 @@ public class View extends javax.swing.JFrame {
                                     .addComponent(jLabel5))
                                 .addGap(25, 25, 25)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel6)))
+                                    .addComponent(ColumnText)
+                                    .addComponent(LineText)
+                                    .addComponent(ValueText)
+                                    .addComponent(NameText)
+                                    .addComponent(IdText)))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jButton3)
@@ -249,23 +270,23 @@ public class View extends javax.swing.JFrame {
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel6))
+                            .addComponent(IdText))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel7))
+                            .addComponent(NameText))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel8))
+                            .addComponent(ValueText))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel9))
+                            .addComponent(LineText))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel10))
+                            .addComponent(ColumnText))
                         .addGap(61, 61, 61)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3)
@@ -309,6 +330,30 @@ public class View extends javax.swing.JFrame {
     private void clear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1ActionPerformed
         output.setText("");
     }//GEN-LAST:event_clear1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (tokenId > 0) {
+            tokenId--;
+        }
+        update();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (tokenId < listSymbol.size() - 1) {
+            tokenId++;
+        }
+        update();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        tokenId = 0;
+        update();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       tokenId= listSymbol.size()-1;
+       update();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -394,22 +439,65 @@ public class View extends javax.swing.JFrame {
                 try {
                     output.setText("");
                     //lee el archivo y lo gusarda en listSymbol
-                    listSymbol = LexerExecute.execute(archivo);  
+                    listSymbol = LexerExecute.execute(archivo);
+                    Wrapper wrapper= Wrapper.getInstance();
+                    if(wrapper.isError()){
+                        System.out.println(wrapper.getMessage());
+                    }
                     reader = new Scanner(archivo);
                     while (reader.hasNextLine()) {
                         String i = reader.nextLine();
                         output.append(i + "\n");
                     }
                     reader.close();
-                    
-                    
-                    
+                    if (tokenId > 0) {
+                        tokenId--;
+                    }
+                    update();
+
                 } catch (IOException ex) {
                 }
             }
         }
     }
+
+    private void update() {
+        try {
+            if (listSymbol == null || archivo == null) {
+                return;
+            }
+            Symbol currentSym = listSymbol.get(tokenId);
+            IdText.setText("" + tokenId);
+            NameText.setText(LexerExecute.getName(currentSym.sym));
+            ValueText.setText("" + currentSym.value);
+            LineText.setText("" + currentSym.left);
+            ColumnText.setText("" + currentSym.right);
+
+            /*
+        Aqui se pintan los tokens
+             */
+            //Limpiamos cualquier otro estilo anterior
+            output.getHighlighter().removeAllHighlights();
+
+            //ingresamos desde donde y hasta donde se pintara
+            int startIndex = output.getLineStartOffset(currentSym.left) + currentSym.right;
+            int endIndex = startIndex + currentSym.value.toString().length();
+
+            //escogemos un colo para pintarlo
+            DefaultHighlighter.DefaultHighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.LIGHT_GRAY);
+
+            //Por ultimo agregamos esas 3 variables anterior a un nuevo estilo Highlight a nuestro TEXTAREA
+            output.getHighlighter().addHighlight(startIndex, endIndex, painter);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ColumnText;
+    private javax.swing.JLabel IdText;
+    private javax.swing.JLabel LineText;
+    private javax.swing.JLabel NameText;
+    private javax.swing.JLabel ValueText;
     private javax.swing.JButton clear;
     private javax.swing.JButton clear1;
     private javax.swing.JButton jButton1;
@@ -417,15 +505,10 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea output;
     private javax.swing.JTextField path;

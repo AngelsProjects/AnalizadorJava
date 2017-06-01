@@ -3,7 +3,7 @@ package analizadorjava;
 public class AnalizadorJava {
 
     public static void main(String[] args) {
-    /*
+        /*
         try {
             parser p = new parser(new Yylex(new java.io.FileInputStream("C:/Users/LaFer/Desktop/AnalizadorJava/src/resources/nepe.java")));
             p.parse();
@@ -14,6 +14,14 @@ public class AnalizadorJava {
         View view = new View();
         view.setLocationRelativeTo(null);
         view.setVisible(true);
+         /*
+        Wrapper wr = Wrapper.getInstance();
+        wr.setMessage("Hola esto es un wrapper");
+        System.out.println(wr.getMessage());
+        View view = new View();
+        view.setLocationRelativeTo(null);
+        view.setVisible(true);
+*/
     }
 
 }

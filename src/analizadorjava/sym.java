@@ -9,68 +9,66 @@ package analizadorjava;
 public class sym {
   /* terminals */
   public static final int DOSPUNTOS = 10;
-  public static final int DISTINTO = 55;
-  public static final int ABRIR_LLAVE = 40;
+  public static final int DISTINTO = 53;
+  public static final int ABRIR_LLAVE = 38;
   public static final int CASO = 32;
   public static final int PUBLICO = 19;
   public static final int PUNTOYCOMA = 9;
   public static final int INTERRUMPUTOR = 29;
-  public static final int ARGUMENTO = 62;
+  public static final int ARGUMENTO = 60;
   public static final int ENTERO = 2;
   public static final int SI = 28;
-  public static final int RESTA = 45;
-  public static final int PRINCIPAL = 59;
-  public static final int MENORIGUAL = 52;
-  public static final int NOT = 50;
-  public static final int AND = 48;
+  public static final int RESTA = 43;
+  public static final int PRINCIPAL = 57;
+  public static final int MENORIGUAL = 50;
+  public static final int NOT = 48;
+  public static final int AND = 46;
   public static final int PRIVADO = 18;
-  public static final int MAYORQUE = 57;
-  public static final int IGUAL = 37;
+  public static final int MAYORQUE = 55;
+  public static final int IGUAL = 35;
   public static final int PAQUETE = 25;
   public static final int SINO = 33;
-  public static final int OR = 49;
+  public static final int OR = 47;
   public static final int VALORINT = 13;
-  public static final int CORCHETE_CIERRA = 43;
+  public static final int CORCHETE_CIERRA = 41;
   public static final int MIENTRAS = 30;
-  public static final int SUMA = 44;
+  public static final int SUMA = 42;
   public static final int IMPORTAR = 24;
-  public static final int MAYORIGUAL = 51;
-  public static final int CERRAR_PARENTESIS = 39;
+  public static final int MAYORIGUAL = 49;
+  public static final int CERRAR_PARENTESIS = 37;
   public static final int EOF = 0;
-  public static final int HUECO = 58;
+  public static final int HUECO = 56;
   public static final int ESTATICO = 21;
   public static final int CLASE = 23;
-  public static final int COMILLA = 60;
+  public static final int COMILLA = 58;
   public static final int error = 1;
   public static final int CADENA = 17;
   public static final int COMENTARIO = 26;
-  public static final int CERRAR_LLAVE = 41;
-  public static final int INTENTAR = 34;
-  public static final int RESIDUO = 53;
+  public static final int CERRAR_LLAVE = 39;
+  public static final int RESIDUO = 51;
   public static final int VALORDOBLE = 15;
   public static final int DOBLE = 4;
-  public static final int MENORQUE = 56;
-  public static final int ABRIR_PARENTESIS = 38;
-  public static final int ROMPER = 36;
+  public static final int MENORQUE = 54;
+  public static final int ABRIR_PARENTESIS = 36;
   public static final int VALORBOOLEANO = 16;
-  public static final int CORCHETE_ABRE = 42;
+  public static final int ROMPER = 34;
+  public static final int CORCHETE_ABRE = 40;
   public static final int PUNTO = 11;
-  public static final int VARIABLE = 61;
-  public static final int IGUALIGUAL = 54;
+  public static final int VARIABLE = 59;
+  public static final int IGUALIGUAL = 52;
   public static final int VALORFLOAT = 14;
   public static final int FALSO = 8;
   public static final int HACER = 31;
   public static final int PROTEGIDO = 20;
   public static final int BOOLEANO = 5;
-  public static final int CACHAR = 35;
   public static final int STRING = 6;
   public static final int PARA = 27;
   public static final int RETORNAR = 12;
   public static final int VERDADERO = 7;
-  public static final int DIVISION = 46;
+  public static final int DIVISION = 44;
   public static final int DEFECTO = 22;
   public static final int FLOTANTE = 3;
-  public static final int MULTIPLICACION = 47;/*
+  public static final int MULTIPLICACION = 45;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -106,8 +104,6 @@ public class sym {
   "HACER",
   "CASO",
   "SINO",
-  "INTENTAR",
-  "CACHAR",
   "ROMPER",
   "IGUAL",
   "ABRIR_PARENTESIS",
@@ -135,6 +131,6 @@ public class sym {
   "COMILLA",
   "VARIABLE",
   "ARGUMENTO"
-  };*/
+  };
 }
 
