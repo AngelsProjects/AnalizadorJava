@@ -443,6 +443,8 @@ public class View extends javax.swing.JFrame {
                     Wrapper wrapper= Wrapper.getInstance();
                     if(wrapper.isError()){
                         System.out.println(wrapper.getMessage());
+                    }else{
+                        System.out.println(wrapper.getMessage());
                     }
                     reader = new Scanner(archivo);
                     while (reader.hasNextLine()) {
@@ -480,7 +482,7 @@ public class View extends javax.swing.JFrame {
             output.getHighlighter().removeAllHighlights();
 
             //ingresamos desde donde y hasta donde se pintara
-            int startIndex = output.getLineStartOffset(currentSym.left) + currentSym.right;
+            int startIndex = output.getLineStartOffset(currentSym.left-1) + currentSym.right-1;
             int endIndex = startIndex + currentSym.value.toString().length();
 
             //escogemos un colo para pintarlo

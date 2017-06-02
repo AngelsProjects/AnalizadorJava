@@ -2,11 +2,13 @@ package analizadorjava;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java_cup.runtime.Symbol;
 
 public class LexerExecute {
 
-    static ArrayList<String> tokens = new ArrayList<>();
+    sym sm = new sym();
+    static ArrayList<String> tokens;
 
     public static String getName(int i) {
         return tokens.get(i);
@@ -18,7 +20,7 @@ public class LexerExecute {
         ArrayList<Symbol> listSym = new ArrayList();
         try {
             Yylex lexer = new Yylex(new java.io.FileReader(file));
-            for(sym = lexer.next_token(); sym.sym != 0; sym = lexer.next_token()) {
+            for (sym = lexer.next_token(); sym.sym != 0; sym = lexer.next_token()) {
                 listSym.add(sym);
             }
         } catch (Exception e) {
@@ -27,7 +29,10 @@ public class LexerExecute {
     }
 
     private static void initList() {
-        
+        sym sm = new sym();
+
+        tokens = new ArrayList<>(Arrays.asList(sm.terminalNames));
+        /*
         tokens.add(0, "EOF");
         tokens.add(1, "error");
         tokens.add(2, "ENTERO");
@@ -40,7 +45,7 @@ public class LexerExecute {
         tokens.add(9, "PUNTOYCOMA");
         tokens.add(10, "DOSPUNTOS");
         tokens.add(11, "PUNTO");
-        tokens.add(12, "RETORNAR ");
+        tokens.add(12, "RETORNAR");
         tokens.add(13, "VALORINT");
         tokens.add(14, "VALORFLOAT");
         tokens.add(15, "VALORDOBLE");
@@ -69,27 +74,26 @@ public class LexerExecute {
         tokens.add(38, "ABRIR_LLAVE");
         tokens.add(39, "CERRAR_LLAVE");
         tokens.add(40, "CORCHETE_ABRE");
-        tokens.add(41, "SUMA");
-        tokens.add(42, "RESTA");
-        tokens.add(43, "DIVISON");
-        tokens.add(44, "MULTIPLICACION");
-        tokens.add(45, "AND");
-        tokens.add(46, "OR");
-        tokens.add(47, "NOT");
-        tokens.add(48, "MAYORIGUAL");
-        tokens.add(49, "MENORIGUAL");
-        tokens.add(50, "RESIDUO");
-        tokens.add(51, "IGUALIGUAL");
-        tokens.add(52, "DISTINTO");
-        tokens.add(53, "MENORQUE");
-        tokens.add(54, "MAYORQUE");
-        tokens.add(55, "HUECO");
-        tokens.add(56, "PRINCIPAL");
-        tokens.add(57, "COMILLA");
-        tokens.add(58, "VARIABLE");
-        tokens.add(59, "PRINCIPAL");
-        tokens.add(60, "COMILLA");
-        tokens.add(61, "VARIABLE");
-        tokens.add(62, "ARGUMENTO");
+        tokens.add(41, "CORCHETE_CIERRA");
+        tokens.add(42, "SUMA");
+        tokens.add(43, "RESTA");
+        tokens.add(44, "DIVISION");
+        tokens.add(45, "MULTIPLICACION");
+        tokens.add(46, "AND");
+        tokens.add(47, "OR");
+        tokens.add(48, "NOT");
+        tokens.add(49, "MAYORIGUAL");
+        tokens.add(50, "MENORIGUAL");
+        tokens.add(51, "RESIDUO");
+        tokens.add(52, "IGUALIGUAL");
+        tokens.add(53, "DISTINTO");
+        tokens.add(54, "MENORQUE");
+        tokens.add(55, "MAYORQUE");
+        tokens.add(56, "HUECO");
+        tokens.add(57, "PRINCIPAL");
+        tokens.add(58, "COMILLA");
+        tokens.add(59, "VARIABLE");
+        tokens.add(60, "ARGUMENTO");
+         */
     }
 }

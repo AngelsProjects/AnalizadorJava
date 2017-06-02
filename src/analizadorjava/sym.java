@@ -9,66 +9,64 @@ package analizadorjava;
 public class sym {
   /* terminals */
   public static final int DOSPUNTOS = 10;
-  public static final int DISTINTO = 53;
-  public static final int ABRIR_LLAVE = 38;
-  public static final int CASO = 32;
-  public static final int PUBLICO = 19;
+  public static final int DISTINTO = 52;
+  public static final int ABRIR_LLAVE = 37;
+  public static final int CASO = 31;
+  public static final int PUBLICO = 18;
   public static final int PUNTOYCOMA = 9;
-  public static final int INTERRUMPUTOR = 29;
-  public static final int ARGUMENTO = 60;
+  public static final int INTERRUMPUTOR = 28;
+  public static final int ARGUMENTO = 58;
   public static final int ENTERO = 2;
-  public static final int SI = 28;
-  public static final int RESTA = 43;
-  public static final int PRINCIPAL = 57;
-  public static final int MENORIGUAL = 50;
-  public static final int NOT = 48;
-  public static final int AND = 46;
-  public static final int PRIVADO = 18;
-  public static final int MAYORQUE = 55;
-  public static final int IGUAL = 35;
-  public static final int PAQUETE = 25;
-  public static final int SINO = 33;
-  public static final int OR = 47;
-  public static final int VALORINT = 13;
-  public static final int CORCHETE_CIERRA = 41;
-  public static final int MIENTRAS = 30;
-  public static final int SUMA = 42;
-  public static final int IMPORTAR = 24;
-  public static final int MAYORIGUAL = 49;
-  public static final int CERRAR_PARENTESIS = 37;
+  public static final int SI = 27;
+  public static final int RESTA = 42;
+  public static final int PRINCIPAL = 56;
+  public static final int MENORIGUAL = 49;
+  public static final int NOT = 47;
+  public static final int AND = 45;
+  public static final int PRIVADO = 17;
+  public static final int MAYORQUE = 54;
+  public static final int IGUAL = 34;
+  public static final int PAQUETE = 24;
+  public static final int SINO = 32;
+  public static final int OR = 46;
+  public static final int VALORINT = 12;
+  public static final int CORCHETE_CIERRA = 40;
+  public static final int MIENTRAS = 29;
+  public static final int SUMA = 41;
+  public static final int IMPORTAR = 23;
+  public static final int MAYORIGUAL = 48;
+  public static final int CERRAR_PARENTESIS = 36;
   public static final int EOF = 0;
-  public static final int HUECO = 56;
-  public static final int ESTATICO = 21;
-  public static final int CLASE = 23;
-  public static final int COMILLA = 58;
+  public static final int HUECO = 55;
+  public static final int ESTATICO = 20;
+  public static final int CLASE = 22;
   public static final int error = 1;
-  public static final int CADENA = 17;
-  public static final int COMENTARIO = 26;
-  public static final int CERRAR_LLAVE = 39;
-  public static final int RESIDUO = 51;
-  public static final int VALORDOBLE = 15;
+  public static final int CADENA = 16;
+  public static final int COMENTARIO = 25;
+  public static final int CERRAR_LLAVE = 38;
+  public static final int RESIDUO = 50;
+  public static final int VALORDOBLE = 14;
   public static final int DOBLE = 4;
-  public static final int MENORQUE = 54;
-  public static final int ABRIR_PARENTESIS = 36;
-  public static final int VALORBOOLEANO = 16;
-  public static final int ROMPER = 34;
-  public static final int CORCHETE_ABRE = 40;
+  public static final int MENORQUE = 53;
+  public static final int ABRIR_PARENTESIS = 35;
+  public static final int VALORBOOLEANO = 15;
+  public static final int ROMPER = 33;
+  public static final int CORCHETE_ABRE = 39;
   public static final int PUNTO = 11;
-  public static final int VARIABLE = 59;
-  public static final int IGUALIGUAL = 52;
-  public static final int VALORFLOAT = 14;
+  public static final int VARIABLE = 57;
+  public static final int IGUALIGUAL = 51;
+  public static final int VALORFLOAT = 13;
   public static final int FALSO = 8;
-  public static final int HACER = 31;
-  public static final int PROTEGIDO = 20;
+  public static final int HACER = 30;
+  public static final int PROTEGIDO = 19;
   public static final int BOOLEANO = 5;
   public static final int STRING = 6;
-  public static final int PARA = 27;
-  public static final int RETORNAR = 12;
+  public static final int PARA = 26;
   public static final int VERDADERO = 7;
-  public static final int DIVISION = 44;
-  public static final int DEFECTO = 22;
+  public static final int DIVISION = 43;
+  public static final int DEFECTO = 21;
   public static final int FLOTANTE = 3;
-  public static final int MULTIPLICACION = 45;
+  public static final int MULTIPLICACION = 44;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -82,7 +80,6 @@ public class sym {
   "PUNTOYCOMA",
   "DOSPUNTOS",
   "PUNTO",
-  "RETORNAR",
   "VALORINT",
   "VALORFLOAT",
   "VALORDOBLE",
@@ -128,7 +125,6 @@ public class sym {
   "MAYORQUE",
   "HUECO",
   "PRINCIPAL",
-  "COMILLA",
   "VARIABLE",
   "ARGUMENTO"
   };

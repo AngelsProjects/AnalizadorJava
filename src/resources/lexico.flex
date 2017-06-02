@@ -33,7 +33,6 @@ args=[args]
 boolean=[boolean]
 break=[break]
 case=[case]
-catch=[catch]
 classes=[c][l][a][s][s]
 default=[default]
 do=[d][o]
@@ -55,44 +54,51 @@ void=[v][o][i][d]
 while=[w][h][i][l][e]
 false=[f][a][l][s][e]
 true=[t][r][u][e]
-comilla=[\"]
-variable=[_|$|a-z|A-Z][_|$|a-z|A-Z|0-9]*
-cadena=.
+main=[main]
+variable=[_|$|a-z][_|$|a-z|A-Z|0-9]*
+cadena=(\".*\")
 numeroInt=[+|-]*[0-9]+
 numeroFloat=([+|-]*[0-9]*.[0-9]+[f])|([+|-]*[0-9]+[f])
 numeroDoble=([+|-]*[0-9]*.[0-9]+)|([+|-]*[0-9]+)
 boleano=[true|false]
 comentarios=[/][/].+
-SUM = \+
-REST = -
-MULT = \*
-DIV = \/
-MOD = %
-IGUAL = =
-OPIGUAL = ==
-DIFERENTE = \!=
-MENOR = <
-MAYOR = >
-MENORIGUAL = <=
-MAYORIGUAL = >=
-AND = &&
-OR = [\|][\|]
-NOT = \!
-LLAVEA = \{
-LLAVEC = \}
-CORCHETEA = \[
-CORCHETEC = \]
-PARENTESISA = \(
-PARENTESISC = \)
-SEMI = ;
-DOSPUNTOS = :
-
 comment             = {trad_comment} | {line_comment} | {doc_comment}
 trad_comment        = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 line_comment        = "//" ([^\r\n])* {newline}?
 doc_comment         = "/*" "*"+ [^/*] ~"*/"
 newline             =   \r|\n|\r\n
 %%
+
+<YYINITIAL> {
+   
+    "."                 { return newSym(sym.PUNTO,yytext()); }
+    ";"                { return newSym(sym.PUNTOYCOMA,yytext()); }
+    "+"                { return newSym(sym.SUMA,yytext()); }
+    "-"                { return newSym(sym.RESTA,yytext()); }
+    "*"                { return newSym(sym.MULTIPLICACION,yytext()); }
+    "/"                { return newSym(sym.DIVISION,yytext()); }
+    "("                { return newSym(sym.ABRIR_PARENTESIS,yytext()); }
+    ")"                { return newSym(sym.CERRAR_PARENTESIS,yytext()); }
+	":"				   { return newSym(sym.DOSPUNTOS,yytext()); }
+	"["					{ return newSym(sym.CORCHETE_ABRE,yytext()); }
+	"]"					{ return newSym(sym.CORCHETE_CIERRA,yytext()); }
+	"{"					{ return newSym(sym.ABRIR_LLAVE,yytext()); }
+	"}"					{ return newSym(sym.CERRAR_LLAVE,yytext()); }
+	"!"				   { return newSym(sym.NOT,yytext()); }
+	"||"			   { return newSym(sym.OR, yytext()); }
+	"&&"			   { return newSym(sym.AND,yytext()); }
+	">="				{ return newSym(sym.MAYORIGUAL,yytext()); }
+	"<="				{ return newSym(sym.MENORIGUAL,yytext()); }
+	">"					{ return newSym(sym.MAYORQUE,yytext()); }
+	"<"					{ return newSym(sym.MENORQUE,yytext()); }
+	"!="				{ return newSym(sym.DISTINTO,yytext()); }
+	"=="				{ return newSym(sym.IGUALIGUAL, yytext()); }
+	"="					{ return newSym(sym.IGUAL,yytext()); }
+	"%"					{ return newSym(sym.RESIDUO,yytext()); }
+}
+
+{if}        {return newSym(sym.SI,yytext());} 
+{main}      { return newSym(sym.PRINCIPAL,yytext());}
 {args} {return newSym(sym.ARGUMENTO,yytext());}
 {boolean}   {return newSym(sym.BOOLEANO,yytext());}
 {break}     {return newSym(sym.ROMPER,yytext());}
@@ -104,7 +110,6 @@ newline             =   \r|\n|\r\n
 {else}      {return newSym(sym.SINO,yytext());}
 {float}     {return newSym(sym.FLOTANTE,yytext());}
 {for}       {return newSym(sym.PARA,yytext());}
-{if}        {return newSym(sym.SI,yytext());} 
 {import}    {return newSym(sym.IMPORTAR,yytext());} 
 {int}       {return newSym(sym.ENTERO,yytext());} 
 {package}   {return newSym(sym.PAQUETE,yytext());} 
@@ -122,33 +127,9 @@ newline             =   \r|\n|\r\n
 {cadena}    {return newSym(sym.CADENA,yytext());} 
 {numeroInt} {return newSym(sym.VALORINT,yytext());} 
 {numeroFloat}   {return newSym(sym.VALORFLOAT,yytext());} 
-{numeroDoble}   {return newSym(sym.VALORDOBLE,yytext());} 
-{comilla}   {return newSym(sym.COMILLA,yytext());} 
+{numeroDoble}   {return newSym(sym.VALORDOBLE,yytext());}
 {boleano}   {return newSym(sym.BOOLEANO,yytext());} 
-{comentarios}   {return newSym(sym.COMENTARIO,yytext());} 
-{MAYOR} {return newSym(sym.MAYORQUE,yytext());}
-{MENOR} {return newSym(sym.MENORQUE,yytext());}
-{MAYORIGUAL} {return newSym(sym.MAYORIGUAL,yytext());}
-{MENORIGUAL} {return newSym(sym.MENORIGUAL,yytext());}
-{SUM} {return newSym(sym.SUMA,yytext());}
-{REST} {return newSym(sym.RESTA,yytext());}
-{MULT} {return newSym(sym.MULTIPLICACION,yytext());}
-{MOD} {return newSym(sym.RESIDUO,yytext());}
-{PARENTESISA} {return newSym(sym.ABRIR_PARENTESIS,yytext());}
-{PARENTESISC} {return newSym(sym.CERRAR_PARENTESIS,yytext());}
-{DIV} {return newSym(sym.DIVISION,yytext());}
-{CORCHETEA} {return newSym(sym.CORCHETE_ABRE,yytext());}
-{CORCHETEC} {return newSym(sym.CORCHETE_CIERRA,yytext());}
-{LLAVEA} {return newSym(sym.ABRIR_LLAVE,yytext());}
-{LLAVEC} {return newSym(sym.CERRAR_LLAVE,yytext());}
-{DOSPUNTOS} {return newSym(sym.DOSPUNTOS,yytext());}
-{SEMI} {return newSym(sym.PUNTOYCOMA,yytext());}
-{NOT} {return newSym(sym.NOT,yytext());}
-{IGUAL} {return newSym(sym.IGUAL,yytext());}
-{OPIGUAL}                { return newSym(sym.IGUALIGUAL, yytext()); }
-{DIFERENTE}    {return newSym(sym.DISTINTO,yytext());}
-{AND}    {return newSym(sym.AND,yytext());}
-{OR}                { return newSym(sym.OR, yytext()); }
+{comentarios}   {return newSym(sym.COMENTARIO,yytext());}
 (\n|\r|\t|" ")  { }
 {comment}           { System.out.println("Comment recognize :\n" + yytext().substring(2, yylength()-2)); }
 <<EOF>>             { return newSym(sym.EOF,"");}
@@ -159,4 +140,4 @@ newline             =   \r|\n|\r\n
         }else{
             wrapper.setMessage("\nError de sintaxis en Linea: " + (yyline+1) + "Columna: " +yycolumn+1 + ". Texto: " + yytext());
         }
- }
+}

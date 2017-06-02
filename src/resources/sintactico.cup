@@ -22,18 +22,18 @@ parser code
 :}
 
 terminal String ENTERO,FLOTANTE,DOBLE,BOOLEANO,STRING,VERDADERO,FALSO;
-terminal String PUNTOYCOMA,DOSPUNTOS,PUNTO,RETORNAR,VALORINT,VALORFLOAT,VALORDOBLE,VALORBOOLEANO,CADENA;
+terminal String PUNTOYCOMA,DOSPUNTOS,PUNTO,VALORINT,VALORFLOAT,VALORDOBLE,VALORBOOLEANO,CADENA;
 terminal String PRIVADO,PUBLICO,PROTEGIDO,ESTATICO,DEFECTO;
 terminal String CLASE,IMPORTAR,PAQUETE,COMENTARIO;
 terminal String PARA,SI,INTERRUMPUTOR,MIENTRAS,HACER,CASO,SINO,ROMPER;
 terminal String IGUAL,ABRIR_PARENTESIS,CERRAR_PARENTESIS,ABRIR_LLAVE,CERRAR_LLAVE, CORCHETE_ABRE, CORCHETE_CIERRA, SUMA, RESTA, DIVISION,MULTIPLICACION,AND,OR,NOT;
 terminal String MAYORIGUAL,MENORIGUAL,RESIDUO,IGUALIGUAL,DISTINTO,MENORQUE,MAYORQUE; 
 terminal String HUECO,PRINCIPAL;
-terminal String COMILLA,VARIABLE,ARGUMENTO;
+terminal String VARIABLE,ARGUMENTO;
 
 non terminal Condicionif, CondicionFor, OperacionAritmetica, DarvalorVariable, DarvalorVariable2, DarvalorVariable3,DarvalorVariable4,Importacion, Importacion2;
 non terminal EstructuraMientras, HacerMientras, Paqueteria, ElInterrumputor, Comparadores,PaqueteriaRuta,UnaClase,TipoVariable1,TipoVariable2,Valores1,InicioVar;
-non terminal EstructuraClase,Programa,ClasePrincipal, CentroCondicional, SumaOResta, TiposCasos, Casos,TipoValor,Operaciones,MasOperacion,Signos;
+non terminal EstructuraClase,Programa,ClasePrincipal, CentroCondicional, SumaOResta, TiposCasos, Casos,TipoValor,Operaciones,MasOperacion,Signos,MasCondicional;
 start with Programa;
 Programa ::= Paqueteria UnaClase | Paqueteria Importacion UnaClase;
 
@@ -78,7 +78,7 @@ InicioVar ::= TipoVariable1 VARIABLE IGUAL;
 
 DarvalorVariable3 ::= InicioVar Valores1 PUNTOYCOMA;
 
-DarvalorVariable4 ::= BOOLEANO VARIABLE IGUAL VALORBOOLEANO PUNTOYCOMA | STRING VARIABLE IGUAL COMILLA CADENA COMILLA PUNTOYCOMA;
+DarvalorVariable4 ::= BOOLEANO VARIABLE IGUAL VALORBOOLEANO PUNTOYCOMA | STRING VARIABLE IGUAL CADENA PUNTOYCOMA;
 
 Condicionif ::= SI ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE|
                 SI ABRIR_PARENTESIS CentroCondicional CERRAR_PARENTESIS ABRIR_LLAVE EstructuraClase CERRAR_LLAVE SINO ABRIR_LLAVE EstructuraClase CERRAR_LLAVE;
@@ -99,7 +99,10 @@ Casos ::= CASO TiposCasos DOSPUNTOS EstructuraClase ROMPER PUNTOYCOMA | DEFECTO 
 TiposCasos ::= VARIABLE | CentroCondicional | VALORINT |VALORFLOAT |VALORDOBLE | CADENA;
 
 CentroCondicional ::= VERDADERO | FALSO | VALORBOOLEANO | NOT VERDADERO | NOT FALSO | NOT VALORBOOLEANO |
-             VARIABLE Comparadores VARIABLE | VARIABLE Comparadores TipoValor | TipoValor Comparadores VARIABLE | TipoValor Comparadores TipoValor;
+             VARIABLE Comparadores VARIABLE | VARIABLE Comparadores TipoValor | TipoValor Comparadores VARIABLE | TipoValor Comparadores TipoValor |
+                VERDADERO MasCondicional | FALSO MasCondicional | VALORBOOLEANO MasCondicional | NOT VERDADERO MasCondicional | NOT FALSO MasCondicional | NOT VALORBOOLEANO MasCondicional |
+             VARIABLE Comparadores VARIABLE MasCondicional | VARIABLE Comparadores TipoValor MasCondicional | TipoValor Comparadores VARIABLE MasCondicional | TipoValor Comparadores TipoValor MasCondicional;
+MasCondicional ::= AND CentroCondicional | OR CentroCondicional;
 Comparadores ::= MAYORQUE | MENORQUE | MAYORIGUAL | MENORIGUAL | IGUALIGUAL | DISTINTO;
 
 TipoValor ::= Valores1 | VALORBOOLEANO | CADENA;
