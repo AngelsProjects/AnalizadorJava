@@ -32,7 +32,7 @@ import org.jdesktop.swingx.prompt.PromptSupport;
  * @author mextest
  */
 public class View extends javax.swing.JFrame {
-
+    
     File archivo;
     JFileChooser seleccionado;
     ImageIcon img;
@@ -41,15 +41,15 @@ public class View extends javax.swing.JFrame {
     private LineNumberComponent lineNumberComponent;
     private ArrayList<Symbol> listSymbol = new ArrayList();
     private int tokenId = 0;
-
+    
     public class LineNumberModelImpl implements LineNumberModel {
-
+        
         @Override
         public int getNumberLines() {
             int a = output.getLineCount();
             return a;
         }
-
+        
         @Override
         public Rectangle getLineRect(int line) {
             try {
@@ -59,7 +59,7 @@ public class View extends javax.swing.JFrame {
             }
         }
     }
-
+    
     public View() {
         new Thread() {
             @Override
@@ -82,12 +82,12 @@ public class View extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent arg0) {
                 lineNumberComponent.adjustWidth();
             }
-
+            
             @Override
             public void insertUpdate(DocumentEvent arg0) {
                 lineNumberComponent.adjustWidth();
             }
-
+            
             @Override
             public void removeUpdate(DocumentEvent arg0) {
                 lineNumberComponent.adjustWidth();
@@ -151,6 +151,7 @@ public class View extends javax.swing.JFrame {
             }
         });
 
+        output.setEditable(false);
         output.setColumns(20);
         output.setRows(5);
         jScrollPane2.setViewportView(output);
@@ -351,8 +352,8 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       tokenId= listSymbol.size()-1;
-       update();
+        tokenId = listSymbol.size() - 1;
+        update();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
@@ -390,9 +391,9 @@ public class View extends javax.swing.JFrame {
             }
         });
     }
-
+    
     class TypeOfFile extends FileFilter {
-
+        
         @Override
         public boolean accept(File f) {
             return f.isDirectory() || f.getName().toLowerCase().endsWith(".java");
@@ -407,7 +408,7 @@ public class View extends javax.swing.JFrame {
     // Clase pathListener es una clase que se encarga de escuchar cada caracter que se inserte en el field de PATH
 
     class pathListener implements DocumentListener {
-
+        
         final String newline = "\n";
 
         //metodo para escuchar cuando inserte un nuevo caracter
@@ -435,17 +436,12 @@ public class View extends javax.swing.JFrame {
             archivo = new File(path.getText());
             //Si el archivo se puede leer y tiene terminacion java
             if (archivo.canRead() && archivo.getName().endsWith("java")) {
-
+                
                 try {
                     output.setText("");
                     //lee el archivo y lo gusarda en listSymbol
                     listSymbol = LexerExecute.execute(archivo);
-                    Wrapper wrapper= Wrapper.getInstance();
-                    if(wrapper.isError()){
-                        System.out.println(wrapper.getMessage());
-                    }else{
-                        System.out.println(wrapper.getMessage());
-                    }
+                    
                     reader = new Scanner(archivo);
                     while (reader.hasNextLine()) {
                         String i = reader.nextLine();
@@ -456,43 +452,49 @@ public class View extends javax.swing.JFrame {
                         tokenId--;
                     }
                     update();
-
+                    
                 } catch (IOException ex) {
                 }
             }
         }
     }
-
+    
     private void update() {
-        try {
-            if (listSymbol == null || archivo == null) {
-                return;
-            }
-            Symbol currentSym = listSymbol.get(tokenId);
-            IdText.setText("" + tokenId);
-            NameText.setText(LexerExecute.getName(currentSym.sym));
-            ValueText.setText("" + currentSym.value);
-            LineText.setText("" + currentSym.left);
-            ColumnText.setText("" + currentSym.right);
+        Wrapper wrapper = Wrapper.getInstance();
+        if (wrapper.isError()) {
+            output.setText(wrapper.getMessage());
+        } else {
+            try {
+                if (listSymbol == null || archivo == null) {
+                    return;
+                }
+                Symbol currentSym = listSymbol.get(tokenId);
+                IdText.setText("" + tokenId);
+                NameText.setText(LexerExecute.getName(currentSym.sym));
+                ValueText.setText("" + currentSym.value);
+                LineText.setText("" + currentSym.left);
+                ColumnText.setText("" + currentSym.right);
 
-            /*
+                /*
         Aqui se pintan los tokens
-             */
-            //Limpiamos cualquier otro estilo anterior
-            output.getHighlighter().removeAllHighlights();
+                 */
+                //Limpiamos cualquier otro estilo anterior
+                output.getHighlighter().removeAllHighlights();
 
-            //ingresamos desde donde y hasta donde se pintara
-            int startIndex = output.getLineStartOffset(currentSym.left-1) + currentSym.right-1;
-            int endIndex = startIndex + currentSym.value.toString().length();
+                //ingresamos desde donde y hasta donde se pintara
+                int startIndex = output.getLineStartOffset(currentSym.left - 1) + currentSym.right - 1;
+                int endIndex = startIndex + currentSym.value.toString().length();
 
-            //escogemos un colo para pintarlo
-            DefaultHighlighter.DefaultHighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.LIGHT_GRAY);
+                //escogemos un colo para pintarlo
+                DefaultHighlighter.DefaultHighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.LIGHT_GRAY);
 
-            //Por ultimo agregamos esas 3 variables anterior a un nuevo estilo Highlight a nuestro TEXTAREA
-            output.getHighlighter().addHighlight(startIndex, endIndex, painter);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                //Por ultimo agregamos esas 3 variables anterior a un nuevo estilo Highlight a nuestro TEXTAREA
+                output.getHighlighter().addHighlight(startIndex, endIndex, painter);
+            } catch (BadLocationException ex) {
+                Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ColumnText;

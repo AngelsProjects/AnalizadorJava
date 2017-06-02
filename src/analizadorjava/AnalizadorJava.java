@@ -1,16 +1,18 @@
 package analizadorjava;
+
 import java.io.*;
+
 public class AnalizadorJava {
 
-    public static void main(String[] args) {
-         /*
-        try {
-            parser p = new parser(new Yylex(new java.io.FileReader(new File("C:/Users/LaFer/Desktop/AnalizadorJava/src/resources/nepe.java"))));
-            p.parse();
-        }
-        catch(Exception e) { System.out.println("nomameswey!!"+e.getMessage());}
-*/
-   
+    public static void main(String[] args) throws FileNotFoundException, Exception {
+/*
+        String fileName = "C:/Users/LaFer/Desktop/AnalizadorJava/src/resources/nepe.java";
+
+        Yylex scanner = new Yylex(new java.io.FileReader(fileName));
+        parser p = new parser(scanner);
+        p.parse();
+
+        */
         View view = new View();
         view.setLocationRelativeTo(null);
         view.setVisible(true);
@@ -21,7 +23,7 @@ public class AnalizadorJava {
         View view = new View();
         view.setLocationRelativeTo(null);
         view.setVisible(true);
-*/
+         */
     }
 
 }

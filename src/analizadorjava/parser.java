@@ -18,12 +18,8 @@ public class parser extends java_cup.runtime.lr_parser {
     return sym.class;
 }
 
-  /** Default constructor. */
-  @Deprecated
   public parser() {super();}
 
-  /** Constructor which sets the default scanner. */
-  @Deprecated
   public parser(java_cup.runtime.Scanner s) {super(s);}
 
   /** Constructor which sets the default scanner. */
@@ -456,7 +452,7 @@ public class parser extends java_cup.runtime.lr_parser {
         if(wrapper.getMessage().length()>0){
         wrapper.setMessage(wrapper.getMessage()+"\nError de sintaxis en Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: " + s.value);
         }else{
-         wrapper.setMessage("\nError de sintaxis en Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: " + s.value);
+         wrapper.setMessage("TE MAMASTE WEY!!!\nError de sintaxis en Linea: " + (s.right + 1) + "Columna: " + s.left + ". Texto: " + s.value);
         }
     }
     public void unrecovered_syntax_error( Symbol s ) throws java.lang.Exception

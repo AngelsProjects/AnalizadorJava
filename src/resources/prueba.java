@@ -3,6 +3,6 @@ package resources;
 public class prueba {
 
     public static void main(String[] args) {
-int h;
+    int h;
     }
 }

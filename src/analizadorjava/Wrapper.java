@@ -2,7 +2,7 @@ package analizadorjava;
 
 public class Wrapper {
 
-    private String message;
+    private String message = "";
     private boolean error;
     private static Wrapper _instance;
 

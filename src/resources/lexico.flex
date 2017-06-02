@@ -29,38 +29,38 @@ Symbol newSym(int tokenId, Object value) {
 }
 
 %}
-args=[args]
-boolean=[boolean]
-break=[break]
-case=[case]
+args=[a][r][g][s]
+boolean=[b][o][o][l][e][a][n]
+break=[b][r][e][a][k]
+case=[c][a][s][e]
 classes=[c][l][a][s][s]
-default=[default]
+default=[d][e][f][a][u][l][t]
 do=[d][o]
 double=[d][o][u][b][l][e]
 else=[e][l][s][e]
 float=[f][l][o][a][t]
 for=[f][o][r]
-if=[if]
-import=[import]
+if=[i][f]
+import=[i][m][p][o][r][t]
 int=[i][n][t]
 package=[p][a][c][k][a][g][e]
-private=[private]
+private=[p][r][i][v][a][t][e]
 protected=[p][r][o][t][e][c][t][e][d]
 public=[p][u][b][l][i][c] 
 static=[s][t][a][t][i][c]
-switch=[switch]
-string=[String]
+switch=[s][w][i][t][c][h]
+string=[S][t][r][i][n][g]
 void=[v][o][i][d]
 while=[w][h][i][l][e]
 false=[f][a][l][s][e]
 true=[t][r][u][e]
-main=[main]
+main=[m][a][i][n]
 variable=[_|$|a-z][_|$|a-z|A-Z|0-9]*
 cadena=(\".*\")
 numeroInt=[+|-]*[0-9]+
 numeroFloat=([+|-]*[0-9]*.[0-9]+[f])|([+|-]*[0-9]+[f])
 numeroDoble=([+|-]*[0-9]*.[0-9]+)|([+|-]*[0-9]+)
-boleano=[true|false]
+boleano=[t][r][u][e]|[f][a][l][s][e]
 comentarios=[/][/].+
 comment             = {trad_comment} | {line_comment} | {doc_comment}
 trad_comment        = "/*" [^*] ~"*/" | "/*" "*"+ "/"
@@ -97,6 +97,7 @@ newline             =   \r|\n|\r\n
 	"%"					{ return newSym(sym.RESIDUO,yytext()); }
 }
 
+{variable}  {return newSym(sym.VARIABLE,yytext());}
 {if}        {return newSym(sym.SI,yytext());} 
 {main}      { return newSym(sym.PRINCIPAL,yytext());}
 {args} {return newSym(sym.ARGUMENTO,yytext());}
@@ -122,8 +123,7 @@ newline             =   \r|\n|\r\n
 {void}      {return newSym(sym.HUECO,yytext());} 
 {true}      {return newSym(sym.VERDADERO,yytext());} 
 {false}     {return newSym(sym.FALSO,yytext());} 
-{while}     {return newSym(sym.MIENTRAS,yytext());} 
-{variable}  {return newSym(sym.VARIABLE,yytext());} 
+{while}     {return newSym(sym.MIENTRAS,yytext());}
 {cadena}    {return newSym(sym.CADENA,yytext());} 
 {numeroInt} {return newSym(sym.VALORINT,yytext());} 
 {numeroFloat}   {return newSym(sym.VALORFLOAT,yytext());} 
